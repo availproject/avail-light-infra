@@ -1,0 +1,53 @@
+- name: Clear state
+  ansible.builtin.file:
+    path: /var/lib/avail-light/avail_path
+    state: absent
+  register: client_installed
+
+- name: Set up the avail group
+  block:
+    - name: Create the avail group
+      ansible.builtin.group:
+        name: "{{ avail_user }}"
+        state: present
+
+    - name: Add the avail user to the avail group
+      ansible.builtin.user:
+        name: "{{ avail_user }}"
+        groups: "{{ avail_user }}"
+        comment: Avail Application user
+
+    - name: Add the datadog user to the avail group
+      ansible.builtin.user:
+        name: dd-agent
+        groups: "{{ avail_user }}"
+        comment: Avail Application user
+        append: true
+
+- name: Create avail folders
+  block:
+    - name: Create folder for avail data
+      ansible.builtin.file:
+        path: "{{ avail_home }}"
+        owner: "{{ avail_user }}"
+        group: "{{ avail_user }}"
+        state: directory
+        mode: 0777
+
+    - name: Create folder for avail configs
+      ansible.builtin.file:
+        path: /etc/avail-light
+        owner: "{{ avail_user }}"
+        group: "{{ avail_user }}"
+        state: directory
+        mode: 0777
+
+
+- name: Setup aliases
+  blockinfile:
+    path: /etc/bash.bashrc
+    create: yes
+    block: |
+      alias restart="systemctl restart avail-light && journalctl -u avail-light -f"
+      alias logs="journalctl -u avail-light -f"
+  become: yes

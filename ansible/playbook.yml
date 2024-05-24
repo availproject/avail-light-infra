@@ -1,0 +1,11 @@
+- hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    lightnode:
+      client_version: v1.8.1
+      client_role: avail-light
+  roles:
+    - role: lightclient
+  tags:
+    - light

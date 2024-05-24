@@ -1,0 +1,53 @@
+---
+
+- name: Check if Datadog agent is already installed
+  ansible.builtin.stat:
+    path: "/lib/systemd/system/datadog-agent.service"
+  register: datadog_installed
+
+# install agent
+- name: Install Datadog
+  when: not datadog_installed.stat.exists
+  block:
+    - name: Download datadog installer script
+      ansible.builtin.get_url:
+        url: https://s3.amazonaws.com/dd-agent/scripts/install_script.sh
+        dest: /opt/datadog_install_script.sh
+        mode: 0700
+
+    - name: Execute datadog installer script
+      ansible.builtin.shell: >
+        DD_AGENT_MAJOR_VERSION=7
+        DD_API_KEY={{ datadog_api_key }}
+        DD_SITE=\"datadoghq.com\"
+        /opt/datadog_install_script.sh > /opt/datadog_install_script.log
+
+    - name: Add the user dd-agent to the systemd-journal group
+      ansible.builtin.user:
+        name: dd-agent
+        groups: systemd-journal
+        append: true
+      notify:
+        - Restart DD Agent
+
+# configure agent
+- name: Create datadog main config file
+  ansible.builtin.template:
+    src: datadog.yml
+    dest: /etc/datadog-agent/datadog.yaml
+    mode: 0644
+  notify:
+    - Restart DD Agent
+
+# register all services running on instance
+- name: Register all systemd services matching avail-light*
+  shell: "systemctl list-units --type=service --all --no-legend --no-pager | grep 'avail-light' | awk '{print $1}'"
+  register: avail_light_services
+
+- name: Create datadog journal config
+  ansible.builtin.template:
+    src: journal.yml
+    dest: /etc/datadog-agent/conf.d/journald.d/conf.yaml
+    mode: 0644
+  notify:
+    - Restart DD Agent

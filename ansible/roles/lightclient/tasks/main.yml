@@ -1,0 +1,12 @@
+---
+# tasks file for ansible/roles/avail-light
+
+- name: Setup lightnodes
+  vars:
+    client_role: "{{ lightnode.client_role }}"
+    client_version:  "{{ lightnode.client_version }}"
+  block: 
+    # - ansible.builtin.include_tasks: init.yml
+    # - ansible.builtin.include_tasks: binary.yml
+    - ansible.builtin.include_tasks: configure.yml
+  when: inventory_hostname in groups['lightnodes']

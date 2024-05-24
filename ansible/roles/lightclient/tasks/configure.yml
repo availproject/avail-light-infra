@@ -1,0 +1,30 @@
+- name: Generate list of services
+  set_fact:
+    services: "{{ range(1, num_services + 1) | map('string') | map('regex_replace', '^', 'avail-light-') | list }}"
+
+- name: Debug list of services
+  ansible.builtin.debug:
+    var: services
+    
+- name: Create config file for each {{ client_role }}
+  ansible.builtin.template:
+    src: config.yml
+    dest: "/etc/avail-light/config.yml"
+    owner: "{{ avail_user }}"
+    group: "{{ avail_user }}"
+    mode: 0755
+
+- name: Generate service file for each {{ client_role }}
+  ansible.builtin.template:
+    src: avail-light.service
+    dest: "/etc/systemd/system/{{ item }}.service"
+    owner: "{{ avail_user }}"
+    group: "{{ avail_user }}"
+    mode: 0755
+  loop: "{{ services }}"
+  notify: 
+    - Restart "{{ item }}"
+
+- name: Debug list of notifications
+  ansible.builtin.debug:
+    var: ansible_facts['notifications']

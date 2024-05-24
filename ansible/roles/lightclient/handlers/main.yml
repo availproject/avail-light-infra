@@ -1,0 +1,23 @@
+---
+# handlers file for ansible/roles/avail-light
+# - name: Restart Avail Light Service
+#   ansible.builtin.systemd:
+#     state: restarted
+#     daemon_reload: true
+#     name: avail-light
+#     enabled: true
+   
+- name: Restart "{{ item }}"
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  listen: "Restart {{ item }}"
+  loop: "{{ services }}"
+
+- name: Restart DD Agent
+  ansible.builtin.systemd:
+    state: restarted
+    name: datadog-agent
+    enabled: true

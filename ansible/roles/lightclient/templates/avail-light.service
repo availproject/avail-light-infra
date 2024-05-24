@@ -1,0 +1,25 @@
+[Unit]
+Description={{ client_role | default('Avail Light') }} node
+Documentation=https://github.com/availproject/{{ client_role | default('avail-light') }}
+
+# Bring this up after the network is online
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart={{ client_role }}-{{ client_version }} --clean --seed "{{ inventory_hostname }}-{{ item }}" --config /etc/avail-light/config.yml
+
+
+Restart=on-failure
+RestartSec=5s
+
+Type=exec
+
+User=root
+Group=root
+
+TimeoutStartSec=infinity
+TimeoutStopSec=600
+
+[Install]
+WantedBy=multi-user.target

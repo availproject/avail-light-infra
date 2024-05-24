@@ -1,0 +1,9 @@
+
+logs:
+  - type: journald
+    container_mode: false
+
+    include_units:
+      {% for service in avail_light_services.stdout_lines %}
+      - {{ service }}
+      {% endfor %}
