@@ -9,6 +9,7 @@ jobs:
     env:
       NETWORK: turing
       DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY}}
+      SERVER_COUNT: 20
     steps:
     - name: checkout code
       uses: actions/checkout@v3
@@ -18,13 +19,13 @@ jobs:
 
     - name: view ansible inventory
       working-directory: ansible
-      run: ansible-inventory --inventory inventory/{{ env.NETWORK }}.ini --list 
+      run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list 
 
     - name: ping all
       working-directory: ansible/lightclient
-      run: ansible all -m ping --inventory inventory/{{ env.NETWORK }}.ini --extra-vars "@{{ env.NETWORK }}-vars.yml" 
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@{{ env.NETWORK }}-vars.yml" 
    
     - name: run playbook
       if: false
       working-directory: ansible/lightclient
-      run: ansible-playbook playbook.yml --extra-vars "@{{ env.NETWORK }}-vars.yml"
+      run: ansible-playbook playbook.yml --extra-vars "@${{ env.NETWORK }}-vars.yml"
