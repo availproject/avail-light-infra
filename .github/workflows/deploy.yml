@@ -18,6 +18,8 @@ jobs:
       working-directory: ansible
       run: |
         echo "${{ secrets.SSH_KEY }}" >> key && chmod 0600 key && ls -ltr .
+        which python
+        which ansible
     
     - name: view ansible inventory
       working-directory: ansible
