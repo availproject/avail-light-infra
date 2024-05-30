@@ -40,3 +40,5 @@ jobs:
       if: ${{ failure() }}
       with:
         wait-timeout-minutes: 2
+
+# TODO: test that datadog api keys undefined fails
