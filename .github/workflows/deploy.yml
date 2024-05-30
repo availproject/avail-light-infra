@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NETWORK: turing
-      DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY}}
+      DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
       SERVER_COUNT: 20
     steps:
     - name: checkout code
@@ -17,13 +17,7 @@ jobs:
     - name: Setup Virtual Environment
       working-directory: ansible
       run: |
-        source /opt/pipx/venvs/ansible-core/bin/activate
-        which python
-        which ansible
-        cat key
-        mkdir -p ~/.ssh
-        touch ~/.ssh/known_hosts
-        ssh-keyscan -H 103.219.169.103 >> ~/.ssh/known_hosts
+        ls -ltr && chmod 0600 key && ls -ltr
 
     - name: view ansible inventory
       working-directory: ansible
