@@ -17,7 +17,7 @@ jobs:
     - name: Setup Virtual Environment
       working-directory: ansible
       run: |
-        echo "${{ secrets.SSH_KEY }}" >> key && chmod 0600 key && ls -ltr .
+        # echo "${{ secrets.SSH_KEY }}" >> key && chmod 0600 key && ls -ltr .
         source /opt/pipx/venvs/ansible-core/bin/activate
         which python
         which ansible
