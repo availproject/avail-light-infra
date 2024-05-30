@@ -27,5 +27,5 @@ jobs:
    
     - name: run playbook
       if: false
-      working-directory: ansible/lightclient
+      working-directory: ansible
       run: ansible-playbook playbook.yml --extra-vars "@${{ env.NETWORK }}-vars.yml"
