@@ -23,7 +23,7 @@ jobs:
 
     - name: ping all
       working-directory: ansible/lightclient
-      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@{{ env.NETWORK }}-vars.yml" 
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" 
    
     - name: run playbook
       if: false
