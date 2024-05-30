@@ -21,7 +21,7 @@ jobs:
         source /opt/pipx/venvs/ansible-core/bin/activate
         which python
         which ansible
-        ssh -i key ubuntu@103.219.169.103
+        cat key
     
     - name: view ansible inventory
       working-directory: ansible
