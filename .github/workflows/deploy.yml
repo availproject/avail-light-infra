@@ -19,7 +19,8 @@ jobs:
       run: |
         source /opt/pipx/venvs/ansible-core/bin/activate
         echo "${{ secrets.SSH_KEY }}" >> key && chmod 0600 key && ls -ltr .
-
+        ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" 
+    
     - name: view ansible inventory
       working-directory: ansible
       run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list 
@@ -28,12 +29,12 @@ jobs:
       working-directory: ansible
       run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" 
   
+    - name: run playbook
+      working-directory: ansible
+      run: ansible-playbook playbook.yml --extra-vars "@${{ env.NETWORK }}-vars.yml"
+    
     - name: Setup upterm session
       uses: lhotari/action-upterm@v1
       if: ${{ failure() }}
       with:
         wait-timeout-minutes: 2
-
-    - name: run playbook
-      working-directory: ansible
-      run: ansible-playbook playbook.yml --extra-vars "@${{ env.NETWORK }}-vars.yml"
