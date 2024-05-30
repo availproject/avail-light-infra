@@ -28,10 +28,10 @@ jobs:
       run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" 
   
     - name: Setup upterm session
-    uses: lhotari/action-upterm@v1
-    if: ${{ failure() }}
-    with:
-      wait-timeout-minutes: 2
+      uses: lhotari/action-upterm@v1
+      if: ${{ failure() }}
+      with:
+        wait-timeout-minutes: 2
 
     - name: run playbook
       working-directory: ansible
