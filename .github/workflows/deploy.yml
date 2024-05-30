@@ -15,7 +15,7 @@ jobs:
     - name: checkout code
       uses: actions/checkout@v3
     
-    - name: Setup Virtual Environment
+    - name: configure ssh key
       working-directory: ansible
       run: |
         echo "${{ secrets.SSH_KEY }}" > key && chmod 600 key
@@ -26,7 +26,7 @@ jobs:
 
     - name: ping all
       working-directory: ansible
-      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" -vvvv
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml"
   
     - name: run playbook
       working-directory: ansible
