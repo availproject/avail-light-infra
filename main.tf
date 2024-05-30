@@ -18,6 +18,7 @@ resource "latitudesh_project" "project" {
   environment = "Development"
 }
 
+# TODO: Create inventory from terraform output for ansible
 resource "latitudesh_server" "server" {
   hostname         = "lightclient"
   operating_system = "ubuntu_22_04_x64_lts"

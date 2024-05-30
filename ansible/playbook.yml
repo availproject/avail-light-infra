@@ -3,9 +3,31 @@
   gather_facts: true
   vars:
     lightnode:
-      client_version: v1.8.1
+      client_version: v1.9.0
       client_role: avail-light
   roles:
     - role: lightclient
-  tags:
-    - light
+
+# - hosts: all
+#   become: true
+#   gather_facts: true
+#   tasks:
+#     - name: Generate host index
+#       set_fact:
+#         host_index: "{{ groups['lightnodes'].index(inventory_hostname) + 1 }}"
+    
+#     - name: Debug host index
+#       ansible.builtin.debug:
+#         msg: "Host {{ inventory_hostname }} has index {{ host_index }}"
+
+# TODO
+# Terraform with python to create inventory
+# Deploy nodes to digital ocean
+# Terraform to deploy dedicated RPC nodes
+# Deploy fat clients
+# Multiple bootnodes and server mode LCs, DO & latitude
+# cloudflare dns for all
+# Test reachability and monitors for bootnode and otel
+# avail-light-{{ index }} with 20 nodes per instance
+# Ansible applied on all nodes and show logs on datadog
+# datadog monitors on log errors for RPC, bootstraps and dht p2p

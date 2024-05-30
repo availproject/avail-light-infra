@@ -1,9 +1,10 @@
-
 logs:
-  - type: journald
-    container_mode: false
+    {%- for num in range(1,node_count +1) %}
 
-    include_units:
-      {% for service in avail_light_services.stdout_lines %}
-      - {{ service }}
-      {% endfor %}
+    - type: journald
+      config_id: avail-light-{{ num }}
+      source: avail-light-{{ num }}
+      service: {{ client_version }}
+      include_units:
+          - avail-light-{{ num }}.service
+    {%- endfor %}

@@ -1,5 +1,10 @@
 ---
 
+- name: Fail if variable `datadog_api_key` is not defined
+  ansible.builtin.fail:
+    msg: "The variable 'datadog_api_key' is not defined. Please define it before running the playbook."
+  when: datadog_api_key is not defined
+
 - name: Check if Datadog agent is already installed
   ansible.builtin.stat:
     path: "/lib/systemd/system/datadog-agent.service"
@@ -18,7 +23,7 @@
     - name: Execute datadog installer script
       ansible.builtin.shell: >
         DD_AGENT_MAJOR_VERSION=7
-        DD_API_KEY={{ datadog_api_key }}
+        DD_API_KEY={{ lookup('env', 'DATADOG_API_KEY') | default(datadog_api_key, true) }}
         DD_SITE=\"datadoghq.com\"
         /opt/datadog_install_script.sh > /opt/datadog_install_script.log
 
@@ -39,14 +44,9 @@
   notify:
     - Restart DD Agent
 
-# register all services running on instance
-- name: Register all systemd services matching avail-light*
-  shell: "systemctl list-units --type=service --all --no-legend --no-pager | grep 'avail-light' | awk '{print $1}'"
-  register: avail_light_services
-
 - name: Create datadog journal config
   ansible.builtin.template:
-    src: journal.yml
+    src: journald.yml
     dest: /etc/datadog-agent/conf.d/journald.d/conf.yaml
     mode: 0644
   notify:
