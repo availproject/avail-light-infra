@@ -17,17 +17,15 @@ jobs:
     - name: Setup Virtual Environment
       working-directory: ansible
       run: |
-        source /opt/pipx/venvs/ansible-core/bin/activate
         echo "${{ secrets.SSH_KEY }}" >> key && chmod 0600 key && ls -ltr .
-        ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" 
     
     - name: view ansible inventory
       working-directory: ansible
-      run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list 
+      run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
 
     - name: ping all
       working-directory: ansible
-      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" 
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" -vvv
   
     - name: run playbook
       working-directory: ansible
