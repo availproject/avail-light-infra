@@ -28,7 +28,7 @@ jobs:
 
     - name: ping all
       working-directory: ansible
-      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" -vvv
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml" -vvvv
   
     - name: run playbook
       working-directory: ansible
