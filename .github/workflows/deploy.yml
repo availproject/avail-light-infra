@@ -10,6 +10,8 @@ jobs:
       NETWORK: turing
       DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
       SERVER_COUNT: 20
+      ANSIBLE_HOST_KEY_CHECKING: False
+
     steps:
     - name: checkout code
       uses: actions/checkout@v3
