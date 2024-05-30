@@ -1,3 +1,5 @@
+
+# TODO move all these vars to the inventory file
 current_deploy_inventory: lightclient_turing
 
 node_count: 20
@@ -5,8 +7,6 @@ node_count: 20
 # domain
 base_dn: "lightclient.turing"
 public_domain: "avail.so"
-
-ot_collector_endpoint: "http://otel.{{ base_dn }}.{{ public_domain }}:4317"
 
 # used for key generation
 avail_user: avail
