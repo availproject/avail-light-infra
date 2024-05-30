@@ -18,7 +18,7 @@ jobs:
 
     - name: view ansible inventory
       working-directory: ansible
-      run: ansible-inventory --inventory inventory//{{ env.NETWORK }}.ini --list 
+      run: ansible-inventory --inventory inventory/{{ env.NETWORK }}.ini --list 
 
     - name: ping all
       working-directory: ansible/lightclient
