@@ -19,7 +19,7 @@ jobs:
     - name: Setup Virtual Environment
       working-directory: ansible
       run: |
-        ls -ltr && chmod 0600 key && ls -ltr
+        echo "${{ secrets.SSH_KEY }}" > key && chmod 600 key
 
     - name: view ansible inventory
       working-directory: ansible
