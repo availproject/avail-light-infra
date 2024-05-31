@@ -8,6 +8,6 @@
   block: 
     # - ansible.builtin.include_tasks: init.yml
     # - ansible.builtin.include_tasks: binary.yml
-    # - ansible.builtin.include_tasks: configure.yml
+    - ansible.builtin.include_tasks: configure.yml
     - ansible.builtin.include_tasks: datadog.yml
   when: inventory_hostname in groups['lightnodes']

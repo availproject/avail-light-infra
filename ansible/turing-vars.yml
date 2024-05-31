@@ -2,7 +2,7 @@
 # TODO move all these vars to the inventory file
 current_deploy_inventory: lightclient_turing
 
-node_count: 20
+node_count: 100
 
 # domain
 base_dn: "lightclient.turing"

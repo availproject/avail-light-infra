@@ -23,6 +23,7 @@
 # TODO
 # Terraform with python to create inventory
 # Deploy nodes to digital ocean
+# inventory and group vars
 # Terraform to deploy dedicated RPC nodes
 # Deploy fat clients
 # Multiple bootnodes and server mode LCs, DO & latitude
