@@ -28,6 +28,5 @@
 # Multiple bootnodes and server mode LCs, DO & latitude
 # cloudflare dns for all
 # Test reachability and monitors for bootnode and otel
-# avail-light-{{ index }} with 20 nodes per instance
-# Ansible applied on all nodes and show logs on datadog
 # datadog monitors on log errors for RPC, bootstraps and dht p2p
+# Deploy less nodes and auto cleanup

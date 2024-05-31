@@ -21,3 +21,26 @@
   notify: 
     - Restart all services
     - Restart DD Agent
+
+# TODO: test deploying less nodes than node_count
+
+# - name: Find existing service files
+#       find:
+#         paths: "{{ service_dir }}"
+#         patterns: "{{ service_prefix }}-*.service"
+#       register: existing_services
+
+#     - name: Delete extra service files
+#       shell: |
+#         for service_file in {{ service_dir }}/{{ service_prefix }}-*.service; do
+#           node_number=$(echo "$service_file" | grep -oP '(?<=-)\d+(?=\.service)')
+#           if [[ "$node_number" -gt {{ node_count }} ]]; then
+#             echo "Deleting $service_file"
+#             rm "$service_file"
+#             systemctl disable "{{ service_prefix }}-$node_number.service"
+#           fi
+#         done
+#         systemctl daemon-reload
+#       args:
+#         executable: /bin/bash
+#       when: existing_services.matched > node_count

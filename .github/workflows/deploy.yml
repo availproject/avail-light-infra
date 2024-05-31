@@ -19,20 +19,16 @@ jobs:
       uses: actions/checkout@v3
     
     - name: configure ssh key
-      # working-directory: ansible
       run: |
         echo "${{ secrets.SSH_KEY }}" > key && chmod 600 key
 
     - name: view ansible inventory
-      # working-directory: ansible
       run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
 
     - name: ping all
-      # working-directory: ansible
       run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml"
   
     - name: run playbook
-      # working-directory: ansible
       if: false
       run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml"
     
