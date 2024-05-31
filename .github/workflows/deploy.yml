@@ -29,7 +29,7 @@ jobs:
       run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml"
   
     - name: run playbook
-      run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml"
+      run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
     
     - name: Setup upterm session
       uses: lhotari/action-upterm@v1
