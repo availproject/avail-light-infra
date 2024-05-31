@@ -1,9 +1,10 @@
 ---
-
+# todo: fix this not working
 - name: Fail if variable `datadog_api_key` is not defined
   ansible.builtin.fail:
     msg: "The variable 'datadog_api_key' is not defined. Please define it before running the playbook."
-  when: datadog_api_key is not defined
+  when: datadog_api_key == ""
+
 
 - name: Check if Datadog agent is already installed
   ansible.builtin.stat:

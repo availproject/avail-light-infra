@@ -26,7 +26,7 @@
 
 # - name: Find existing service files
 #       find:
-#         paths: "{{ service_dir }}"
+#         paths: "/etc/systemd/system"
 #         patterns: "{{ service_prefix }}-*.service"
 #       register: existing_services
 
