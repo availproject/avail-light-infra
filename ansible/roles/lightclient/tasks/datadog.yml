@@ -36,18 +36,18 @@
         - Restart DD Agent
 
 # configure agent
-- name: Create datadog main config file
-  ansible.builtin.template:
-    src: datadog.yml
-    dest: /etc/datadog-agent/datadog.yaml
-    mode: 0644
-  notify:
-    - Restart DD Agent
+# - name: Create datadog main config file
+#   ansible.builtin.template:
+#     src: datadog.yml
+#     dest: /etc/datadog-agent/datadog.yaml
+#     mode: 0644
+#   notify:
+#     - Restart DD Agent
 
-- name: Create datadog journal config
-  ansible.builtin.template:
-    src: journald.yml
-    dest: /etc/datadog-agent/conf.d/journald.d/conf.yaml
-    mode: 0644
-  notify:
-    - Restart DD Agent
+# - name: Create datadog journal config
+#   ansible.builtin.template:
+#     src: journald.yml
+#     dest: /etc/datadog-agent/conf.d/journald.d/conf.yaml
+#     mode: 0644
+#   notify:
+#     - Restart DD Agent
