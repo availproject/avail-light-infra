@@ -23,11 +23,9 @@ operation_mode = "server"
 connection_idle_timeout = 10
 
 secret_key = { seed = "{{ inventory_hostname }}" }
-bootstraps = {{ vars['bootnode_address_' + current_deploy_inventory] }}
-full_node_ws = {{ vars['ws_' + current_deploy_inventory] }}
+full_node_ws = {{ ws_endpoint }}
 max_parallel_fetch_tasks = 8
 query_proof_rpc_parallel_tasks = 10
 sync_blocks_depth = 0
-genesis_hash = "{{ vars['genesis_hash_' + current_deploy_inventory] }}"
 {% endif %}
 

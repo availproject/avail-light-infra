@@ -21,7 +21,7 @@ datadog_api_key: !vault |
 
 # turing
 # ws_lightclient_turing: ['wss://turing-rpc.avail.so/ws']
-ws_lightclient_turing: ['wss://avail-turing.public.blastapi.io','wss://turing-testnet.avail-rpc.com']
+ws_endpoint: ['wss://avail-turing.public.blastapi.io','wss://turing-testnet.avail-rpc.com']
 
 genesis_hash_lightclient_turing: d3d2f3a3495dc597434a99d7d449ebad6616db45e4e4f178f31cc6fa14378b70
 

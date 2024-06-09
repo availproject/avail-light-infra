@@ -1,7 +1,7 @@
 log_level = 'DEBUG'
 log_format_json = true
 avail_path = "{{ avail_home }}/avail_path"
-genesis_hash = "{{ vars['genesis_hash_' + current_deploy_inventory] }}"
+genesis_hash = "{{ genesis_hash }}"
 confidence=80.0
 kad_record_ttl=43200
 origin = "internal"
