@@ -13,6 +13,6 @@ systemProbe:
   enabled: enabled
 
 tags:
-  - basedn:{{ base_dn }}
+  - basedn:"lightclient.{{ network }}"
   - provisioned_by:ansible
   - hosted_on:latitude
