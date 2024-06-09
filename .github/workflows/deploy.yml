@@ -12,7 +12,6 @@ jobs:
     env:
       NETWORK: turing
       DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
-      SERVER_COUNT: 20
 
     steps:
     - name: checkout code
@@ -26,7 +25,7 @@ jobs:
       run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
 
     - name: ping all
-      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml"
+      run: ansible all -m ping --inventory inventory/${{d env.NETWORK }}.ini --extra-vars "@${{ env.NETWORK }}-vars.yml"
   
     - name: run playbook
       run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini

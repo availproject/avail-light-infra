@@ -1,13 +1,7 @@
 ---
 
-- name: Restart all services
-  ansible.builtin.systemd:
-    name: "avail-light-{{ item }}"
-    state: restarted
-    enabled: true
-    daemon_reload: true
-  with_sequence: count="{{ node_count }}"
-  listen: "Restart all services"
+# - name: Restart all services
+#   command: sudo systemctl restart {{ service_prefix }}-*
 
 - name: Restart DD Agent
   ansible.builtin.systemd:

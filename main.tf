@@ -18,15 +18,17 @@ resource "latitudesh_project" "project" {
   environment = "Development"
 }
 
-# TODO: Create inventory from terraform output for ansible
-resource "latitudesh_server" "server" {
-  hostname         = "lightclient"
+# Define server resource dynamically for lightnodes, bootnodes, and fatclients
+resource "latitudesh_server" "lightnode" {
+  count            = var.lightnode_count
+  hostname         = "lightnode-${count.index + 1}-lightclient-turing"
   operating_system = "ubuntu_22_04_x64_lts"
-  plan             = var.plan                   # Uses the plan slug we defined on variables.tf
-  project          = latitudesh_project.project.id   # Uses the project id we will create
-  site             = var.site # You can use the site id or slug
-  ssh_keys         = [latitudesh_ssh_key.ssh_key.id] # Uses the ssh id we will create. If you don't have an SSH key ready to use, you can remove this line and servers will be created with password auth instead
+  plan             = var.plan
+  project          = latitudesh_project.project.id
+  site             = var.site
+  ssh_keys         = [latitudesh_ssh_key.ssh_key.id]
 }
+
 
 resource "latitudesh_ssh_key" "ssh_key" {
   project    = latitudesh_project.project.id # Uses the project id we will create
@@ -36,4 +38,19 @@ resource "latitudesh_ssh_key" "ssh_key" {
 
 output "server-ip" {
   value = latitudesh_server.server.primary_ipv4
+}
+
+# Output server details
+output "lightnodes" {
+  value = [for i in range(var.lightnode_count) : {
+    hostname = latitudesh_server.lightnode[i].hostname
+    ip       = latitudesh_server.lightnode[i].primary_ipv4
+  }]
+}
+
+output "fatclients" {
+  value = [for i in range(var.fatclient_count) : {
+    hostname = latitudesh_server.fatclient[i].hostname
+    ip       = latitudesh_server.fatclient[i].primary_ipv4
+  }]
 }

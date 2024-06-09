@@ -1,5 +1,6 @@
+# todo check this works with start end
 logs:
-    {%- for num in range(1,node_count +1) %}
+    {%- for num in range(service_start,service_end) %}
 
     - type: journald
       config_id: avail-light-{{ num }}

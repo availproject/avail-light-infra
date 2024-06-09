@@ -1,5 +1,4 @@
 ---
-# todo: fix this not working
 - name: Debug print Datadog API key
   debug:
     msg: "Datadog API key is: '{{ datadog_api_key }}'"
@@ -27,7 +26,7 @@
     - name: Execute datadog installer script
       ansible.builtin.shell: >
         DD_AGENT_MAJOR_VERSION=7
-        DD_API_KEY={{  }}
+        DD_API_KEY={{ datadog_api_key }}
         DD_SITE=\"datadoghq.com\"
         /opt/datadog_install_script.sh > /opt/datadog_install_script.log
 
