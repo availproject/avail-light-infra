@@ -1,0 +1,31 @@
+http_server_host = '0.0.0.0'
+avail_path = "{{ avail_home }}/avail_path"
+http_server_port = 7000
+origin = "internal"
+port = 37000
+log_level = 'DEBUG'
+log_format_json = true
+ot_collector_endpoint = "{{ ot_collector_endpoint }}"
+block_processing_delay = 0
+
+{% if inventory_hostname in groups['lightnodes'] %}
+max_negotiating_inbound_streams = 10000
+task_command_buffer_size = 30000
+per_connection_event_buffer_size = 10000
+
+kad_record_ttl = 43200
+publication_interval = 86400
+
+replication_factor = 5
+max_kad_record_number = 20000000
+replication_interval = 28800
+operation_mode = "server"
+connection_idle_timeout = 10
+
+secret_key = { seed = "{{ inventory_hostname }}" }
+full_node_ws = {{ ws_endpoint }}
+max_parallel_fetch_tasks = 8
+query_proof_rpc_parallel_tasks = 10
+sync_blocks_depth = 0
+{% endif %}
+

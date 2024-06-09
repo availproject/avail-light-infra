@@ -1,0 +1,11 @@
+# todo check this works with start end
+logs:
+    {%- for num in range(service_start,service_end) %}
+
+    - type: journald
+      config_id: avail-light-{{ num }}
+      source: avail-light-{{ num }}
+      service: {{ client_version }}
+      include_units:
+          - avail-light-{{ num }}.service
+    {%- endfor %}

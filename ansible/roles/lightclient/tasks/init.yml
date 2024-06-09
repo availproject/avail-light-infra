@@ -1,0 +1,76 @@
+# mount nvme2n1 for latitude
+- name: Create a primary partition on nvme2n1
+  community.general.parted:
+    device: /dev/nvme2n1
+    number: 1
+    label: gpt
+    part_start: 0%
+    part_end: 100%
+    part_type: primary
+    fs_type: ext4
+    name: statedata
+    unit: "%"
+    state: present
+
+- name: Format nvme2n1p1 ext4
+  community.general.filesystem:
+    dev: /dev/nvme2n1p1
+    fstype: ext4
+
+- name: Refresh metadata
+  ansible.builtin.setup: {}
+
+- name: Mount nvme2n1p1 to {{ avail_home }}
+  ansible.posix.mount:
+    path: "{{ avail_home }}"
+    src: "UUID={{ ansible_devices['nvme2n1']['partitions']['nvme2n1p1']['uuid'] }}"
+    fstype: ext4
+    state: mounted
+
+# setup user
+- name: Set up the avail group
+  block:
+    - name: Create the avail group
+      ansible.builtin.group:
+        name: "{{ avail_user }}"
+        state: present
+
+    - name: Add the avail user to the avail group
+      ansible.builtin.user:
+        name: "{{ avail_user }}"
+        groups: "{{ avail_user }}"
+        comment: Avail Application user
+
+    - name: Add the datadog user to the avail group
+      ansible.builtin.user:
+        name: dd-agent
+        groups: "{{ avail_user }}"
+        comment: Avail Application user
+        append: true
+
+- name: Create avail folders
+  block:
+    - name: Create folder for avail data
+      ansible.builtin.file:
+        path: "{{ avail_home }}"
+        owner: "{{ avail_user }}"
+        group: "{{ avail_user }}"
+        state: directory
+        mode: 0777
+
+    - name: Create folder for avail configs
+      ansible.builtin.file:
+        path: /etc/avail-light
+        owner: "{{ avail_user }}"
+        group: "{{ avail_user }}"
+        state: directory
+        mode: 0777
+
+
+- name: Setup aliases
+  blockinfile:
+    path: /etc/bash.bashrc
+    create: yes
+    block: |
+      alias logs="journalctl -u avail-light-* -f"
+  become: yes

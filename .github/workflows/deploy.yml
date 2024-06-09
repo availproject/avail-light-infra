@@ -1,0 +1,39 @@
+name: Deploy Lightclients
+
+on:
+  push:
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible
+    env:
+      NETWORK: turing
+      DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+    
+    - name: configure ssh key
+      run: |
+        echo "${{ secrets.SSH_KEY }}" > key && chmod 600 key
+
+    - name: view ansible inventory
+      run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
+
+    - name: ping all
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
+  
+    - name: run playbook
+      run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
+    
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+      if: ${{ failure() }}
+      with:
+        wait-timeout-minutes: 2
+
+# TODO: test that datadog api keys undefined fails

@@ -1,0 +1,6 @@
+log_level = 'DEBUG'
+log_format_json = true
+avail_path = "{{ avail_home }}/avail_path"
+confidence=80.0
+kad_record_ttl=43200
+origin = "internal"

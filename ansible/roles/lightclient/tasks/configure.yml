@@ -1,0 +1,53 @@
+  
+- name: Find existing service files
+  find:
+    paths: "/etc/systemd/system"
+    patterns: "{{ service_prefix }}-*.service"
+  register: existing_services
+
+- name: existing_services_count
+  ansible.builtin.debug:
+    msg: "current count: {{ existing_services.matched }}, desired count: {{ desired_count }}"
+
+- name: Create config file for {{ client_role }}
+  ansible.builtin.template:
+    src: client-config.yml
+    dest: "/etc/avail-light/config.yml"
+    owner: "{{ avail_user }}"
+    group: "{{ avail_user }}"
+    mode: 0755
+  register: config_file
+
+- name: Scale up services
+  block:
+    - name: Copy deploy script to remote host
+      ansible.builtin.template:
+        src: deploy_services.sh
+        dest: "{{ avail_home }}/deploy_services.sh"
+        mode: '0755'
+
+    - name: Run the deploy script
+      shell: "{{ avail_home }}/deploy_services.sh"
+      register: script_output
+
+    - name: Print script output
+      debug:
+        var: script_output.stdout
+  when: existing_services.matched < desired_count or config_file.changed
+
+- name: Downscale services
+  shell: |
+    rm {{ avail_home }}/deleted_services.txt
+    for service_file in {{ service_dir }}/{{ service_prefix }}-*.service; do
+      node_number=$(echo "$service_file" | grep -oP '(?<=-)\d+(?=\.service)')
+      if [[ "$node_number" -gt {{ desired_count - 1 }} ]]; then
+        echo "Deleting $service_file" >> {{ avail_home }}/deleted_services.txt
+        systemctl stop "{{ service_prefix }}-$node_number.service"
+        systemctl disable "{{ service_prefix }}-$node_number.service"
+        rm "$service_file"
+      fi
+    done
+    systemctl daemon-reload
+  args:
+    executable: /bin/bash
+  when: existing_services.matched > desired_count
