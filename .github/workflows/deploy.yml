@@ -2,6 +2,8 @@ name: Deploy Lightclients
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   ansible:
