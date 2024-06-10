@@ -1,0 +1,36 @@
+name: Dispatched Deploy
+
+on:
+  repository_dispatch:
+    types: ["lc_external_deployment"]
+jobs:
+  deploy_lc:
+    runs-on: ubuntu-latest
+    env:
+      LC_VERSION: ${{ github.event.client_payload.tag }}
+      NETWORK: turing
+      DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+    
+    - name: configure ssh key
+      run: |
+        echo "${{ secrets.SSH_KEY }}" > key && chmod 600 key
+
+    - name: view ansible inventory
+      run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
+
+    - name: ping all
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
+
+# On plan debug mode for now just for testing dispatch event
+    - name: run playbook
+      run: ansible-playbook -C -D playbook.yml --inventory inventory/${{ env.NETWORK }}.ini --extra-vars "avail_version=${{ env.LC_VERSION }}"
+    
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+      if: ${{ failure() }}
+      with:
+        wait-timeout-minutes: 2
