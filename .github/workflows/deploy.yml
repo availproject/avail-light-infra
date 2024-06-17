@@ -3,10 +3,8 @@ name: Deploy Lightclients
 on:
   push:
 
-
 env:
   NETWORK: hex
-
 
 jobs:
   terraform:
@@ -18,6 +16,17 @@ jobs:
     steps:
     - name: checkout code
       uses: actions/checkout@v3
+
+    - name: terraform plan
+      run: terraform plan
+
+    - name: terraform apply
+      run: terraform apply --auto-approve
+
+    - name: terraform apply
+      working-directory: ansible
+      run: ls -ltr
+
 
   # ansible:
   #   runs-on: ubuntu-latest
