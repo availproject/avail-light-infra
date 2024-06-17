@@ -1,32 +1,33 @@
 #!/bin/bash
 
 # Define variables
-CLIENT_ROLE=${1:-"{{ service_prefix }}"}
-CLIENT_VERSION=${2:-"{{ client_version }}"}
+CLIENT_ROLE="{{ service_prefix }}"
+CLIENT_VERSION="{{ client_version }}"
 SERVICE_DIR="{{ service_dir }}"
-SERVICE_START="{{ service_start }}"
-SERVICE_END="{{ service_end }}"
+SERVICE_START={{ service_start }}
+SERVICE_END={{ service_end }}
 
 # Create systemd service files
 for (( ITEM=SERVICE_START; ITEM<SERVICE_END; ITEM++ )); do
   cat << EOF > ${SERVICE_DIR}/${CLIENT_ROLE}-${ITEM}.service
 [Unit]
 Description=${CLIENT_ROLE}-${ITEM}
-Documentation=https://github.com/availproject/${CLIENT_ROLE}
+Documentation="https://github.com/availproject/${CLIENT_ROLE}"
 
 # Bring this up after the network is online
 After=network-online.target
 Wants=network-online.target
 
-# TODO: need db-dir flag
 [Service]
 ExecStart=${CLIENT_ROLE}-${CLIENT_VERSION} --clean \
 --http-server-port $((7000 + ITEM)) \
 --seed "${HOSTNAME}-${ITEM}" \
 --port $((37000 + ITEM)) \
---config /etc/avail-light/config.yml \
---network turing
-     
+--config /etc/avail-light/config.toml \
+--network {{ network }}
+
+Environment="RUST_BACKTRACE=1"
+
 Restart=on-failure
 RestartSec=5s
 

@@ -2,39 +2,24 @@
   become: true
   gather_facts: true
   vars:
-    avail_version: v1.9.0
+    avail_light_version: v1.9.1
     desired_count: 10
-    service_start: "{{ (groups['lightnodes'].index(inventory_hostname)) * desired_count }}"
-    service_end: "{{ (groups['lightnodes'].index(inventory_hostname) + 1) * desired_count }}"
+    service_start: "{{ groups['lightnode'].index(inventory_hostname) * desired_count }}"
+    service_end: "{{ (groups['lightnode'].index(inventory_hostname) + 1) * desired_count }}"
     lightnode:
       client_role: avail-light
   roles:
     - role: lightclient
 
 
-# - hosts: all
-#   become: true
-#   gather_facts: true
-#   tasks:
-#     - name: Calculate service_start and service_end for lightnodes
-#       set_fact:
-#         host_index: "{{ groups['lightnodes'].index(inventory_hostname) + 1 }}"
-#         service_start: "{{ (groups['lightnodes'].index(inventory_hostname)) * 100 }}"
-#         service_end: "{{ (groups['lightnodes'].index(inventory_hostname) + 1) * 100 }}"
-    
-#     - name: Display calculated service_start and service_end for lightnodes
-#       debug:
-#         msg: "Host {{ inventory_hostname }} has service_start={{ service_start }} and service_end={{ service_end }}"
-#       when: "'lightnodes' in group_names"
-
 # TODO
 # Terraform with python to create inventory
-# Deploy nodes to digital ocean
 # inventory and group vars
 # Terraform to deploy dedicated RPC nodes
 # Deploy fat clients
 # Multiple bootnodes and server mode LCs, DO & latitude
 # cloudflare dns for all
 # Test reachability and monitors for bootnode and otel
+# monitors for systemd services
 # datadog monitors on log errors for RPC, bootstraps and dht p2p
 # Deploy less nodes and auto cleanup

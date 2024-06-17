@@ -1,31 +1,31 @@
 # mount nvme2n1 for latitude
-- name: Create a primary partition on nvme2n1
-  community.general.parted:
-    device: /dev/nvme2n1
-    number: 1
-    label: gpt
-    part_start: 0%
-    part_end: 100%
-    part_type: primary
-    fs_type: ext4
-    name: statedata
-    unit: "%"
-    state: present
+# - name: Create a primary partition on nvme2n1
+#   community.general.parted:
+#     device: /dev/nvme2n1
+#     number: 1
+#     label: gpt
+#     part_start: 0%
+#     part_end: 100%
+#     part_type: primary
+#     fs_type: ext4
+#     name: statedata
+#     unit: "%"
+#     state: present
 
-- name: Format nvme2n1p1 ext4
-  community.general.filesystem:
-    dev: /dev/nvme2n1p1
-    fstype: ext4
+# - name: Format nvme2n1p1 ext4
+#   community.general.filesystem:
+#     dev: /dev/nvme2n1p1
+#     fstype: ext4
 
-- name: Refresh metadata
-  ansible.builtin.setup: {}
+# - name: Refresh metadata
+#   ansible.builtin.setup: {}
 
-- name: Mount nvme2n1p1 to {{ avail_home }}
-  ansible.posix.mount:
-    path: "{{ avail_home }}"
-    src: "UUID={{ ansible_devices['nvme2n1']['partitions']['nvme2n1p1']['uuid'] }}"
-    fstype: ext4
-    state: mounted
+# - name: Mount nvme2n1p1 to {{ avail_home }}
+#   ansible.posix.mount:
+#     path: "{{ avail_home }}"
+#     src: "UUID={{ ansible_devices['nvme2n1']['partitions']['nvme2n1p1']['uuid'] }}"
+#     fstype: ext4
+#     state: mounted
 
 # setup user
 - name: Set up the avail group

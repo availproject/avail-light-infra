@@ -1,10 +1,14 @@
 ---
 
-# - name: Restart all services
-#   command: sudo systemctl restart {{ service_prefix }}-*
-
 - name: Restart DD Agent
   ansible.builtin.systemd:
     state: restarted
     name: datadog-agent
+    enabled: true
+
+# needed for Digital Ocean
+- name: Restart journald
+  ansible.builtin.systemd:
+    state: restarted
+    name: systemd-journald
     enabled: true
