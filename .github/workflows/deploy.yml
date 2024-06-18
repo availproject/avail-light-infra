@@ -34,12 +34,18 @@ jobs:
     - name: terraform apply
       run: terraform apply --auto-approve
 
-    - name: terraform apply
+    - name: upload ssh key
       working-directory: ansible
-      run: ls -ltr
+      uses: actions/upload-artifact@v4
+      with:
+        name: ansible-files
+        path: |
+          ${{ env.NETWORK }}_key
+          inventory/${{ env.NETWORK }}.ini
 
   ansible:
     runs-on: ubuntu-latest
+    needs: terraform
     defaults:
       run:
         working-directory: ansible
@@ -47,15 +53,21 @@ jobs:
     steps:
     - name: checkout code
       uses: actions/checkout@v3
-    
-    - name: configure ssh key
+
+    - name: download ssh key
+      uses: actions/download-artifact@v4
+      with:
+        name: ansible-files
+        path: .
+
+    - name: show ssh key exists
       run: ls -ltr
 
     - name: view ansible inventory
       run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
 
-  #   - name: ping all
-  #     run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
+    - name: ping all
+      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
   
   #   - name: run playbook
   #     run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
