@@ -59,8 +59,11 @@ jobs:
         name: ansible-files
         path: ansible
 
-    - name: show ssh key exists
-      run: ls -ltr
+    - name: show ansible files exists
+      run: |
+        chmod 0600 ${{ env.NETWORK }}_key
+        ls -lash
+        cat inventory/${{ env.NETWORK }}.ini
 
     - name: view ansible inventory
       run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
