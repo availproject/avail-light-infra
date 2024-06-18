@@ -71,8 +71,8 @@ jobs:
     - name: ping all
       run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
   
-  #   - name: run playbook
-  #     run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
+    - name: run playbook
+      run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
     
   #   - name: Setup upterm session
   #     uses: lhotari/action-upterm@v1
