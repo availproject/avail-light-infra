@@ -39,8 +39,8 @@ jobs:
       with:
         name: ansible-files
         path: |
-          ../../../ansible/${{ env.NETWORK }}_key
-          ../../../ansible/inventory/${{ env.NETWORK }}.ini
+          ansible/${{ env.NETWORK }}_key
+          ansible/inventory/${{ env.NETWORK }}.ini
 
   ansible:
     runs-on: ubuntu-latest
