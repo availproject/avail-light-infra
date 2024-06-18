@@ -1,32 +1,31 @@
 #!/bin/bash
 
 # Define variables
-CLIENT_ROLE="{{ service_prefix }}"
+SERVICE_PREFIX="{{ service_prefix }}"
 CLIENT_VERSION="{{ client_version }}"
 SERVICE_DIR="{{ service_dir }}"
 SERVICE_START={{ service_start }}
 SERVICE_END={{ service_end }}
 
 # Create systemd service files
-for (( ITEM=SERVICE_START; ITEM<SERVICE_END; ITEM++ )); do
-  cat << EOF > ${SERVICE_DIR}/${CLIENT_ROLE}-${ITEM}.service
+for (( INDEX=SERVICE_START; INDEX<SERVICE_END; INDEX++ )); do
+  cat << EOF > ${SERVICE_DIR}/${SERVICE_PREFIX}-${INDEX}.service
 [Unit]
-Description=${CLIENT_ROLE}-${ITEM}
-Documentation="https://github.com/availproject/${CLIENT_ROLE}"
+Description=${SERVICE_PREFIX}-${INDEX}
 
-# Bring this up after the network is online
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=${CLIENT_ROLE}-${CLIENT_VERSION} --clean \
---http-server-port $((7000 + ITEM)) \
---seed "${HOSTNAME}-${ITEM}" \
---port $((37000 + ITEM)) \
+ExecStart=${SERVICE_PREFIX}-${CLIENT_VERSION} --clean \
+--http-server-port $((7000 + INDEX)) \
+--seed "${HOSTNAME}-${INDEX}" \
+--port $((37000 + INDEX)) \
 --config /etc/avail-light/config.toml \
---network {{ network }}
+--network {{ network }} \
+{% if group_names[0] == "fatclient" %}
 
-Environment="RUST_BACKTRACE=1"
+{% endif %}
 
 Restart=on-failure
 RestartSec=5s
@@ -42,8 +41,8 @@ TimeoutStopSec=600
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl enable ${CLIENT_ROLE}-${ITEM}
-  echo "Configured ${CLIENT_ROLE}-${ITEM} ..."
+  systemctl enable ${SERVICE_PREFIX}-${INDEX}
+  echo "Configured ${SERVICE_PREFIX}-${INDEX} ..."
 done
 
 # Reload systemd to pick up new service files
@@ -51,7 +50,7 @@ systemctl daemon-reload
 echo "Run daemon-reload ..."
 
 # Restart all avail-light services
-for (( ITEM=SERVICE_START; ITEM<=SERVICE_END; ITEM++ )); do
-  systemctl restart ${CLIENT_ROLE}-${ITEM} || true
+for (( INDEX=SERVICE_START; INDEX<=SERVICE_END; INDEX++ )); do
+  systemctl restart ${SERVICE_PREFIX}-${INDEX} || true
 done
 echo "Started all services from ${SERVICE_START} to ${SERVICE_END}"

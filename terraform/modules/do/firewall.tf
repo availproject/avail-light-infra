@@ -1,5 +1,5 @@
 resource "digitalocean_firewall" "droplet_firewall" {
-  name        = "lc-firewall"
+  name        = "${var.node_type}-${var.network}"
   droplet_ids = [for d in digitalocean_droplet.droplet : d.id]
   inbound_rule {
     protocol         = "tcp"

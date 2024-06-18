@@ -2,13 +2,6 @@ locals {
   network   = var.network
 }
 
-
-resource "digitalocean_project" "project" {
-  name        = "Lightclient ${local.network}"
-  purpose     = "Lightclient project for ${local.network}"
-  environment = "Development"
-}
-
 resource "digitalocean_droplet" "droplet" {
   count  = var.node_count
   image  = var.image
@@ -18,12 +11,11 @@ resource "digitalocean_droplet" "droplet" {
   droplet_agent = true
   monitoring    = true
   ssh_keys = var.ssh_fingerprint
-  depends_on = [digitalocean_project.project]
   tags    = concat([format("network:%s", var.network)], var.tags)
 }
 
 resource "digitalocean_project_resources" "project_resource" {
-  project   = digitalocean_project.project.id
+  project   = var.project.id
   resources = [for d in digitalocean_droplet.droplet : d.urn]
 }
 

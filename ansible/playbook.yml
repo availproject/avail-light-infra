@@ -1,17 +1,26 @@
-- hosts: all
+- hosts: lightnode:fatclient
   become: true
   gather_facts: true
   vars:
     avail_light_version: v1.9.1
     desired_count: 10
-    service_start: "{{ groups['lightnode'].index(inventory_hostname) * desired_count }}"
-    service_end: "{{ (groups['lightnode'].index(inventory_hostname) + 1) * desired_count }}"
-    lightnode:
-      client_role: avail-light
-  roles:
-    - role: lightclient
+    service_start: "{{ groups[groups.keys() | first].index(inventory_hostname) * desired_count }}"
+    service_end: "{{ (groups[groups.keys() | first].index(inventory_hostname) + 1) * desired_count }}"
+  tasks:
+    - block:
+      - include_role:
+          name: lightclient
 
 
+- hosts: otel
+  become: true
+  gather_facts: true
+  vars:
+    client_version: 0.97.0
+  tasks:
+    - block:
+      - include_role:
+          name: collector
 # TODO
 # Terraform with python to create inventory
 # inventory and group vars

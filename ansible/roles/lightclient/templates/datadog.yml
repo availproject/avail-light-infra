@@ -1,4 +1,4 @@
-hostname: "{{ansible_hostname}}-{{ network }}"
+hostname: "{{ansible_hostname}}"
 host_aliases:
   - "{{ansible_hostname}}"
 api_key: "{{ datadog_api_key }}"

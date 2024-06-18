@@ -12,6 +12,7 @@ variable "node_type" {}
 variable "region" {}
 variable "spec" {}
 variable "ssh_fingerprint" {}
+variable "project" {}
 variable "tags" {
   type    = list(string)
   default = []

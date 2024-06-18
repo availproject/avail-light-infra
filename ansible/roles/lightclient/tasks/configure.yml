@@ -51,3 +51,9 @@
   args:
     executable: /bin/bash
   when: existing_services.matched > desired_count
+
+- name: Copy reset script to remote host
+  ansible.builtin.template:
+    src: reset.sh
+    dest: "{{ service_dir }}/reset.sh"
+    mode: '0755'

@@ -72,5 +72,5 @@
     path: /etc/bash.bashrc
     create: yes
     block: |
-      alias logs="journalctl -u avail-light-* -f"
+      alias logs="journalctl -u avail-* -f"
   become: yes

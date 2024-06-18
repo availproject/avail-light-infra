@@ -73,6 +73,10 @@ jobs:
   
     - name: run playbook
       run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
+      env:
+        ANSIBLE_FORCE_COLOR: "true"
+        PY_COLORS: "1"
+        FORCE_COLOR: "1"
     
   #   - name: Setup upterm session
   #     uses: lhotari/action-upterm@v1

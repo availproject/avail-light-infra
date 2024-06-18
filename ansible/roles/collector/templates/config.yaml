@@ -1,0 +1,53 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+  prometheus:
+    config:
+      scrape_configs:
+      - job_name: 'otel'
+        scrape_interval: 10s
+        static_configs:
+        - targets: ['0.0.0.0:8888']
+
+processors:
+  # https://github.com/open-telemetry/opentelemetry-collector/blob/v0.83.0/processor/batchprocessor/README.md
+  batch:
+    send_batch_max_size: 1000
+    send_batch_size: 500 # number of metrics received before send
+    timeout: 120s #if 0 ignores batch_size and sends immediately
+
+extensions:
+  health_check:
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    const_labels:
+      network: "lightclient.{{ network }}"
+    metric_expiration: 10m
+    resource_to_telemetry_conversion:
+      enabled: true
+
+  datadog:
+    api:
+      site: datadoghq.com
+      key: "{{ datadog_api_key }}"
+    host_metadata:
+      enabled: true
+      tags: ["source:otel.lightclient.{{ network }}"]
+
+  logging:
+    verbosity: detailed
+    sampling_initial: 5
+    sampling_thereafter: 10
+
+service:
+  extensions: [health_check]
+  pipelines:
+    metrics/datadog:
+      receivers: [prometheus, otlp]
+      processors: []
+      exporters: [prometheus, datadog, logging]

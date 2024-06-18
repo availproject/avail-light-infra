@@ -1,0 +1,35 @@
+---
+- name: Fail if variable `datadog_api_key` is not defined
+  ansible.builtin.fail:
+    msg: "The variable 'datadog_api_key' is not defined. Needs env var DATADOG_API_KEY"
+  when: datadog_api_key == ""
+
+- name: Check if bin install file exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/otel-{{ client_version }}
+  register: otel_installed
+
+- ansible.builtin.include_tasks: install-otel.yml
+  when: not otel_installed.stat.exists
+
+- name: Create folder for configs
+  ansible.builtin.file:
+    path: /etc/otel
+    state: directory
+    mode: 0777
+
+- name: Generate otel config file
+  ansible.builtin.template:
+    src: config.yaml
+    dest: /etc/otel/config.yaml
+    mode: "0755"
+  notify: Restart Otel Service
+
+- name: Generate service file
+  ansible.builtin.template:
+    src: otel.service
+    dest: /etc/systemd/system/otel.service
+    mode: 0644
+  notify:
+    - Restart otel
+    - Restart journald

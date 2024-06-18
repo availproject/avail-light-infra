@@ -23,5 +23,11 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+provider "digitalocean" {
+  token = data.aws_ssm_parameter.do_token.value
+}
 
-
+data "aws_ssm_parameter" "do_token" {
+  name            = "do_token"
+  with_decryption = true
+}

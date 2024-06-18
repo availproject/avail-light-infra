@@ -1,0 +1,14 @@
+---
+- name: Restart otel
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: true
+    name: otel
+    enabled: true
+
+# needed for Digital Ocean
+- name: Restart journald
+  ansible.builtin.systemd:
+    state: restarted
+    name: systemd-journald
+    enabled: true

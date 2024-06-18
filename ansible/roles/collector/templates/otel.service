@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenTelemetry Collector
+After=network.target
+
+[Service]
+ExecStart=otel-{{ client_version }} --config /etc/otel/config.yaml
+Restart=on-failure
+Type=simple
+
+User=root
+Group=root
