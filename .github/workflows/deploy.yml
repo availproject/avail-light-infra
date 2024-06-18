@@ -57,7 +57,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: ansible-files
-        path: .
+        path: ansible
 
     - name: show ssh key exists
       run: ls -ltr
