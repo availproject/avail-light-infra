@@ -1,5 +1,10 @@
 ---
 
+- name: Fail if variable `datadog_api_key` is not defined
+  ansible.builtin.fail:
+    msg: "The variable 'datadog_api_key' is not defined. Needs env var DATADOG_API_KEY"
+  when: datadog_api_key == ""
+
 - name: Setup lightnode
   vars:
     client_version:  "{{ avail_light_version }}"
