@@ -12,7 +12,7 @@
           name: lightclient
       rescue:
       - include_role:
-          name: slack_handler
+          name: slack_alert
           tasks_from: failure
 
 - hosts: otel
@@ -26,5 +26,9 @@
           name: collector
       rescue:
       - include_role:
-          name: slack_handler
+          name: slack_alert
           tasks_from: failure
+
+
+# TODO
+# Include pre task for datadog key check
