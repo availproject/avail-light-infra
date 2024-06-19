@@ -19,7 +19,9 @@ env:
   NETWORK: ${{ inputs.network }}
   DATADOG_API_KEY: ${{ secrets.datadog_api_key }}
   FORCE_COLOR: "1"
-
+  GITHUB_WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+  SLACK_WEBHOOK: ${{ secrets.slack_webhook }}
+  
 permissions:
   id-token: write
   contents: read
@@ -43,7 +45,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
 
     - name: terraform init
-      run: terraform init 
+      run: terraform init && exit 1
 
     - name: terraform plan
       run: terraform plan
@@ -99,12 +101,12 @@ jobs:
   #     with:
   #       wait-timeout-minutes: 2
 
-  notify:
+  notify-on-failure:
     runs-on: ubuntu-latest
     if: failure()
     steps:
     - name: Notify failure
       run: |
         echo "Job failed, sending notification."
-        # You can integrate with Slack, email, or other notification services here.
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"Build Failed: ${{ env.GITHUB_WORKFLOW_URL }} "}' ${{ secrets.slack_webhook }}
   
