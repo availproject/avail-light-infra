@@ -104,6 +104,7 @@ jobs:
   #       wait-timeout-minutes: 2
 
   notify-on-failure:
+    needs: [ansible, terraform]
     runs-on: ubuntu-latest
     if: failure()
     steps:
