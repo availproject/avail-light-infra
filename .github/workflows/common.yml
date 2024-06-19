@@ -111,5 +111,5 @@ jobs:
     - name: Notify failure
       run: |
         echo "Job failed, sending notification."
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"Build Failed: ${{ env.GITHUB_WORKFLOW_URL }} "}' ${{ secrets.slack_webhook }}
+        curl -s -X POST -H 'Content-type: application/json' --data '{"text":"LC Deployment Failed: ${{ env.GITHUB_WORKFLOW_URL }} "}' ${{ secrets.slack_webhook }}
   
