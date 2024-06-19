@@ -47,7 +47,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
 
     - name: terraform init
-      run: terraform init && exit 1
+      run: terraform init
 
     - name: terraform plan
       run: terraform plan
