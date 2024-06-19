@@ -19,6 +19,12 @@ resource "digitalocean_project_resources" "project_resource" {
   resources = [for d in digitalocean_droplet.droplet : d.urn]
 }
 
+resource "digitalocean_reserved_ip" "reserved_ip" {
+  count      = var.node_count
+  region     = var.region
+  droplet_id = digitalocean_droplet.droplet[count.index].id
+}
+
 output "droplets" {
   value = [
     for instance in digitalocean_droplet.droplet :

@@ -1,5 +1,9 @@
 ---
 
+- name: Debug print Datadog API key
+  debug:
+    msg: "Datadog API key is: '{{ datadog_api_key }}'"
+
 - name: Fail if variable `datadog_api_key` is not defined
   ansible.builtin.fail:
     msg: "The variable 'datadog_api_key' is not defined. Needs env var DATADOG_API_KEY"
