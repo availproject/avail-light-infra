@@ -10,7 +10,10 @@
     - block:
       - include_role:
           name: lightclient
-
+      rescue:
+      - include_role:
+          name: slack_handler
+          tasks_from: failure
 
 - hosts: otel
   become: true
@@ -21,14 +24,7 @@
     - block:
       - include_role:
           name: collector
-# TODO
-# Terraform with python to create inventory
-# inventory and group vars
-# Terraform to deploy dedicated RPC nodes
-# Deploy fat clients
-# Multiple bootnodes and server mode LCs, DO & latitude
-# cloudflare dns for all
-# Test reachability and monitors for bootnode and otel
-# monitors for systemd services
-# datadog monitors on log errors for RPC, bootstraps and dht p2p
-# Deploy less nodes and auto cleanup
+      rescue:
+      - include_role:
+          name: slack_handler
+          tasks_from: failure
