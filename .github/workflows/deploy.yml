@@ -18,7 +18,6 @@ jobs:
 # TODO: 
 # Trigger avail-light release from another repo with version in payload
 # include ansible check mode on PRs
-# look into systemd useful configs from staking
 # Add branch protection rules
 # Monitors
   # system internal service restarts > 50
@@ -26,4 +25,3 @@ jobs:
   # slack channel to monitor alerts
   # send alerts to pagerduty -> slack (with tagging)
   # create SLO/SLIs
-  # 

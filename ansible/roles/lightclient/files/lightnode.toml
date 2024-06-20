@@ -13,5 +13,3 @@ per_connection_event_buffer_size = 15
 max_negotiating_inbound_streams = 165
 bootstrap_period = 10
 block_processing_delay = 0
-
-ot_collector_endpoint = "http://otel."
