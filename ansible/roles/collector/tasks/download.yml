@@ -1,4 +1,10 @@
 
+- name: Create folder for configs
+  ansible.builtin.file:
+    path: /etc/otel
+    state: directory
+    mode: 0777
+
 - name: Download otel collector
   ansible.builtin.get_url:
     url: https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v{{ otel_version }}/otelcol-contrib_{{ otel_version }}_linux_amd64.tar.gz

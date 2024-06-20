@@ -14,3 +14,16 @@ jobs:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+
+# TODO: 
+# Trigger avail-light release from another repo with version in payload
+# include ansible check mode on PRs
+# look into systemd useful configs from staking
+# Add branch protection rules
+# Monitors
+  # system internal service restarts > 50
+  # otel & bootnode port connections
+  # slack channel to monitor alerts
+  # send alerts to pagerduty -> slack (with tagging)
+  # create SLO/SLIs
+  # 

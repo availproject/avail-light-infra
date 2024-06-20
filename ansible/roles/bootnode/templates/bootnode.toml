@@ -1,0 +1,11 @@
+http_server_host = '0.0.0.0'
+avail_path = "/var/lib/avail-light/avail_path"
+http_server_port = 7000
+origin = "internal"
+port = 37000
+log_level = 'DEBUG'
+log_format_json = true
+ot_collector_endpoint = "http://otel.lightclient.{{ network }}.avail.so:4317"
+
+secret_key = { key = "{{ key }}" }
+genesis_hash = "{{ genesis_hash }}"

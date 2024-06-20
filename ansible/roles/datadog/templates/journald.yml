@@ -1,0 +1,8 @@
+
+logs:
+    - type: journald
+      config_id: {{ name }}
+      source:  {{ name }}.service
+      service: {{ version }}
+      include_units:
+          - {{ name }}.service

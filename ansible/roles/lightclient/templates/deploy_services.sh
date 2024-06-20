@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO: specify FC block partitions
 # Define variables
 SERVICE_PREFIX="{{ service_prefix }}"
 CLIENT_VERSION="{{ client_version }}"

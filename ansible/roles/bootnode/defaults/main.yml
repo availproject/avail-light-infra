@@ -1,0 +1,4 @@
+service_prefix: avail-{{ group_names[0] }}
+service_dir: /etc/systemd/system
+avail_user: root
+avail_home: /var/lib/avail-light

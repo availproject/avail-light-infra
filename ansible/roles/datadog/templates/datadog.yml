@@ -1,0 +1,19 @@
+hostname: "{{ansible_hostname}}"
+host_aliases:
+  - "{{ansible_hostname}}"
+api_key: "{{ datadog_api_key }}"
+logs_enabled: true
+forwarder_storage_max_size_in_bytes: 50000000 # 50MB
+process_config:
+  process_collection:
+    enabled: true
+network_config:
+  enabled: false
+systemProbe:
+  enabled: enabled
+
+tags:
+  - basedn:lightclient.{{ network }}
+  - hosted_on:digitalocean
+  - component:lightclient
+  - role:{{ group_names[0] }}

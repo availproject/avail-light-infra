@@ -1,3 +1,18 @@
+- hosts: bootnode
+  become: true
+  gather_facts: true
+  vars:
+    bootnode_version: v0.0.9
+    datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
+  tasks:
+    - block:
+      - include_role:
+          name: bootnode
+      rescue:
+      - include_role:
+          name: slack_alert
+          tasks_from: failure
+
 - hosts: lightnode:fatclient
   become: true
   gather_facts: true
@@ -30,7 +45,3 @@
       - include_role:
           name: slack_alert
           tasks_from: failure
-
-
-# TODO
-# Include pre task for datadog key check here instead of duplicating

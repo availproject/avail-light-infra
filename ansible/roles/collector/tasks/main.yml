@@ -7,18 +7,12 @@
 - ansible.builtin.include_tasks: download.yml
   when: not otel_installed.stat.exists
 
-- name: Create folder for configs
-  ansible.builtin.file:
-    path: /etc/otel
-    state: directory
-    mode: 0777
-
 - name: Generate otel config file
   ansible.builtin.template:
     src: config.yaml
     dest: /etc/otel/config.yaml
     mode: "0755"
-  notify: Restart Otel Service
+  notify: Restart otel
 
 - name: Generate service file
   ansible.builtin.template:
@@ -28,3 +22,9 @@
   notify:
     - Restart otel
     - Restart journald
+
+- include_role: 
+    name: datadog
+  vars:
+    name: otel
+    version: "{{ otel_version }}"

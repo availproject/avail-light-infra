@@ -1,0 +1,62 @@
+---
+- name: Role of host
+  debug:
+    msg: "role: {{ group_names[0] }}"
+
+- name: Fail if variable `datadog_api_key` is not defined
+  ansible.builtin.fail:
+    msg: "The variable 'datadog_api_key' is not defined. Needs env var DATADOG_API_KEY"
+  when: datadog_api_key == ""
+
+- name: Check if Datadog agent is already installed
+  ansible.builtin.stat:
+    path: "/lib/systemd/system/datadog-agent.service"
+  register: datadog_installed
+
+- name: Install Datadog
+  when: not datadog_installed.stat.exists
+  block:
+    - name: Download datadog installer script
+      ansible.builtin.get_url:
+        url: https://s3.amazonaws.com/dd-agent/scripts/install_script.sh
+        dest: /opt/datadog_install_script.sh
+        mode: 0700
+
+    - name: Execute datadog installer script
+      ansible.builtin.shell: >
+        DD_AGENT_MAJOR_VERSION=7
+        DD_API_KEY={{ datadog_api_key }}
+        DD_SITE=\"datadoghq.com\"
+        /opt/datadog_install_script.sh > /opt/datadog_install_script.log
+
+    - name: Add the user dd-agent to the systemd-journal group
+      ansible.builtin.user:
+        name: dd-agent
+        groups: systemd-journal
+        append: true
+      notify:
+        - Restart DD Agent
+
+- name: Create datadog main config file
+  ansible.builtin.template:
+    src: datadog.yml
+    dest: /etc/datadog-agent/datadog.yaml
+    mode: 0644
+  notify:
+    - Restart DD Agent
+
+- name: Create datadog journal config
+  ansible.builtin.template:
+    src: journald.yml
+    dest: /etc/datadog-agent/conf.d/journald.d/conf.yaml
+    mode: 0644
+  notify:
+    - Restart journald
+
+- name: Create datadog systemd config
+  ansible.builtin.template:
+    src: systemd.yml
+    dest: /etc/datadog-agent/conf.d/systemd.d/conf.yaml
+    mode: 0644
+  notify:
+    - Restart DD Agent

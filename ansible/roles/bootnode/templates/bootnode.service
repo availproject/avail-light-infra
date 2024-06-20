@@ -1,0 +1,11 @@
+[Unit]
+Description={{ group_names[0] }}
+After=network.target
+
+[Service]
+ExecStart={{ service_prefix }}-{{ bootnode_version }} --config /etc/avail-light/config.toml
+Restart=on-failure
+Type=simple
+
+User=root
+Group=root

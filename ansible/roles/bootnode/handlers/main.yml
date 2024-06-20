@@ -1,9 +1,9 @@
 ---
-- name: Restart otel
+- name: Restart bootnode
   ansible.builtin.systemd:
     state: restarted
     daemon_reload: true
-    name: otel
+    name: avail-bootnode
     enabled: true
 
 - name: Restart journald

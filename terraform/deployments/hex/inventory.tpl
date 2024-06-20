@@ -1,4 +1,7 @@
 [bootnode]
+%{ for bootnode in jsondecode(bootnode) ~}
+${bootnode.hostname} ansible_host=${bootnode.ip}
+%{ endfor ~}
 
 [lightnode]
 %{ for lightnode in jsondecode(lightnodes) ~}
