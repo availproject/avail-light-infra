@@ -30,6 +30,8 @@
       - include_role:
           name: slack_alert
           tasks_from: failure
+  tags:
+    - lightclient
 
 - hosts: otel
   become: true

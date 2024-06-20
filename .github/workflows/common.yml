@@ -94,8 +94,14 @@ jobs:
     - name: ping all
       run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
   
-    - name: run playbook
-      run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
+    - name: run bootnode playbook
+      run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit bootnode
+
+    - name: run lightclient playbook
+      run: ansible-playbook playbook.yml --tags lightclient -i inventory/${{ env.NETWORK }}.ini
+
+    - name: run otel playbook
+      run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit otel
     
   #   - name: Setup upterm session
   #     uses: lhotari/action-upterm@v1

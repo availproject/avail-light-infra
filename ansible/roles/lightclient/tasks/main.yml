@@ -1,20 +1,9 @@
 ---
-
-- name: Debug print Datadog API key
-  debug:
-    msg: "Datadog API key is: '{{ datadog_api_key }}'"
-
-- name: Fail if variable `datadog_api_key` is not defined
-  ansible.builtin.fail:
-    msg: "The variable 'datadog_api_key' is not defined. Needs env var DATADOG_API_KEY"
-  when: datadog_api_key == ""
-
 - name: Setup lightnode
   vars:
     client_version:  "{{ avail_light_version }}"
   block: 
     - ansible.builtin.include_tasks: init.yml
-    - ansible.builtin.include_tasks: binary.yml
     - ansible.builtin.include_tasks: configure.yml
     - ansible.builtin.include_tasks: datadog.yml
   when: inventory_hostname in groups['lightnode']
@@ -24,7 +13,6 @@
     client_version:  "{{ avail_light_version }}"
   block: 
     - ansible.builtin.include_tasks: init.yml
-    - ansible.builtin.include_tasks: binary.yml
     - ansible.builtin.include_tasks: configure.yml
     - ansible.builtin.include_tasks: datadog.yml
   when: inventory_hostname in groups['fatclient']
