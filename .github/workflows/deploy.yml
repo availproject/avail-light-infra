@@ -4,15 +4,24 @@ on:
   repository_dispatch:
     types: ["binary_release"]
     
-  push:
-    branches: [ "**" ]
+  workflow_dispatch:
+    inputs:
+      avail_light_version:
+        description: 'avail-light release version to deploy'
+        required: true
+        default: 'v1.9.1'
+      network:
+        description: 'network to deploy to'
+        required: true
+        default: hex
+      
 
 jobs:
   hex:
     uses: ./.github/workflows/common.yml
     with:
-      network: hex
-      avail_light_version: ${{ github.event.client_payload.avail_light_version || 'v1.9.1' }}
+      network: ${{ inputs.network }}
+      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version }}
     secrets:
       datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
