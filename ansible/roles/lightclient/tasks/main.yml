@@ -1,4 +1,10 @@
 ---
+- name: Fail if variable `avail_light_version` is not defined
+  ansible.builtin.fail:
+    msg: "The variable 'avail_light_version' is not defined. Needs env var AVAIL_LIGHT_VERSION"
+  when: avail_light_version == ""
+
+
 - name: Setup lightnode
   vars:
     client_version:  "{{ avail_light_version }}"
