@@ -4,6 +4,9 @@
     msg: "The variable 'avail_light_version' is not defined. Needs env var AVAIL_LIGHT_VERSION"
   when: avail_light_version == ""
 
+- name: Debug avail_light_version
+  debug:
+    msg: "avail_light_version: {{ avail_light_version }}"
 
 - name: Setup lightnode
   vars:
