@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Echo the client payload
-      run: echo "Client Payload: ${{ toJson(github.event.client_payload) }}"
+      run: echo "Client Payload: test"
 
   hex:
     if: false
