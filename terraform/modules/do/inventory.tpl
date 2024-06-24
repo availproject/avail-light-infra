@@ -1,8 +1,3 @@
-[bootnode]
-%{ for bootnode in jsondecode(bootnode) ~}
-${bootnode.hostname} ansible_host=${bootnode.ip}
-%{ endfor ~}
-
 [lightnode]
 %{ for lightnode in jsondecode(lightnodes) ~}
 ${lightnode.hostname} ansible_host=${lightnode.ip}
@@ -16,6 +11,11 @@ ${fatclient.hostname} ansible_host=${fatclient.ip}
 [otel]
 %{ for otel in jsondecode(otel) ~}
 ${otel.hostname} ansible_host=${otel.ip}
+%{ endfor ~}
+
+[bootnode]
+%{ for bootnode in jsondecode(bootnode) ~}
+${bootnode.hostname} ansible_host=${bootnode.ip}
 %{ endfor ~}
 
 [all:vars]

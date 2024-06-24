@@ -25,6 +25,23 @@ resource "digitalocean_reserved_ip" "reserved_ip" {
   droplet_id = digitalocean_droplet.droplet[count.index].id
 }
 
+
+data "template_file" "ansible_inventory" {
+  template = file("${path.module}/inventory.tpl")
+  vars = {
+    otel       = jsonencode(module.otel.droplets)
+    bootnode   = jsonencode(module.bootnode.droplets)
+    lightnodes = jsonencode(module.lightnode.droplets)
+    fatclients = jsonencode(module.fatclient.droplets)
+    network    = var.network
+  }
+}
+
+resource "local_file" "ansible_inventory" {
+  content  = data.template_file.ansible_inventory.rendered
+  filename = "${path.module}/../../../ansible/inventory/${var.network}.ini"
+}
+
 output "droplets" {
   value = [
     for instance in digitalocean_droplet.droplet :
