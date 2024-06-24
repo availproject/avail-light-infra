@@ -1,0 +1,15 @@
+http_server_host = "0.0.0.0"
+log_level = "INFO"
+avail_path = "/var/lib/avail-light/avail_path"
+log_format_json = true
+
+operation_mode='server'
+origin='internal'
+query_parallelism = 3
+query_timeout = 15
+replication_factor = 5
+task_command_buffer_size = 90
+per_connection_event_buffer_size = 15
+max_negotiating_inbound_streams = 165
+bootstrap_period = 10
+block_processing_delay = 0

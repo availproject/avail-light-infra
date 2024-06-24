@@ -1,34 +1,70 @@
-# mount nvme2n1 for latitude
-- name: Create a primary partition on nvme2n1
-  community.general.parted:
-    device: /dev/nvme2n1
-    number: 1
-    label: gpt
-    part_start: 0%
-    part_end: 100%
-    part_type: primary
-    fs_type: ext4
-    name: statedata
-    unit: "%"
-    state: present
+---
 
-- name: Format nvme2n1p1 ext4
-  community.general.filesystem:
-    dev: /dev/nvme2n1p1
-    fstype: ext4
 
-- name: Refresh metadata
-  ansible.builtin.setup: {}
+- name: Check if bin exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/{{ service_prefix }}-{{ client_version }}
+  register: bin_installed
+  
+- name: Download avail-light binary
+  block:
+    - name: Remove any existing versions
+      shell: rm /usr/local/bin/avail* /opt/avail* || true
+      ignore_errors: true
 
-- name: Mount nvme2n1p1 to {{ avail_home }}
-  ansible.posix.mount:
-    path: "{{ avail_home }}"
-    src: "UUID={{ ansible_devices['nvme2n1']['partitions']['nvme2n1p1']['uuid'] }}"
-    fstype: ext4
-    state: mounted
+    - name: Download avail-light archive on x86_64 architecture
+      register: avail_download_results
+      ansible.builtin.get_url:
+        url: https://github.com/availproject/avail-light/releases/download/{{ client_version }}/avail-light-linux-amd64.tar.gz
+        dest: /opt/avail_light_{{ client_version }}_linux_amd.tar.gz
+        mode: 0600
+        force: false
+        timeout: 300
+      when: ansible_architecture == "x86_64"
+    - name: Download avail-light archive on aarch64 architecture
+      register: avail_download_results
+      ansible.builtin.get_url:
+        url: https://github.com/availproject/avail-light/releases/download/{{ client_version }}/avail-light-linux-arm64.tar.gz #arm64 or aarch64
+        dest: /opt/avail_light_{{ client_version }}_linux_aarch64.tar.gz
+        mode: 0600
+        force: false
+        timeout: 300
+      when: ansible_architecture == "aarch64"
+
+- name: Extract avail-light archive
+  block:
+    - name: Extract avail-light archive on x86_64 architecture
+      ansible.builtin.unarchive:
+        src: /opt/avail_light_{{ client_version }}_linux_amd.tar.gz
+        dest: /opt
+        remote_src: true
+      when: ansible_architecture == "x86_64"
+    - name: Extract avail-light archive on aarch64 architecture
+      ansible.builtin.unarchive:
+        src: /opt/avail_light_{{ client_version }}_linux_aarch64.tar.gz
+        dest: /opt
+        remote_src: true
+      when: ansible_architecture == "aarch64"
+
+- name: Create a symbolic link for avail-light
+  block:
+    - name: Create a symbolic link on x86_64 architecture
+      ansible.builtin.file:
+        src: /opt/avail-light-linux-amd64
+        dest: /usr/local/bin/{{ service_prefix }}-{{ client_version }}
+        state: link
+      when: ansible_architecture == "x86_64"
+    - name: Create a symbolic link on aarch64 architecture
+      ansible.builtin.file:
+        src: /opt/avail-light-linux-arm64 #arm64 or aarch64
+        dest: /usr/local/bin/{{ service_prefix }}-{{ client_version }}
+        state: link
+      when: ansible_architecture == "aarch64"
+
 
 # setup user
 - name: Set up the avail group
+  when: not bin_installed.stat.exists
   block:
     - name: Create the avail group
       ansible.builtin.group:
@@ -49,6 +85,7 @@
         append: true
 
 - name: Create avail folders
+  when: not bin_installed.stat.exists
   block:
     - name: Create folder for avail data
       ansible.builtin.file:
@@ -66,11 +103,16 @@
         state: directory
         mode: 0777
 
+    - name: Setup aliases
+      blockinfile:
+        path: /etc/bash.bashrc
+        create: yes
+        block: |
+          alias logs="journalctl -u avail-* -f"
+      become: yes
 
-- name: Setup aliases
-  blockinfile:
-    path: /etc/bash.bashrc
-    create: yes
-    block: |
-      alias logs="journalctl -u avail-light-* -f"
-  become: yes
+    - name: Copy reset script to remote host
+      ansible.builtin.template:
+        src: reset.sh
+        dest: "{{ service_dir }}/reset.sh"
+        mode: '0755'

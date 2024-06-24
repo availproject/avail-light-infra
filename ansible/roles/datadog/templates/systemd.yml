@@ -1,0 +1,11 @@
+init_config:
+
+instances:
+  - unit_names:
+    - {{ name }}.service
+
+    substate_status_mapping:
+      {{ name }}.service:
+        running: ok
+        exited: critical
+        stopped: critical

@@ -1,0 +1,4 @@
+---
+# vars file for roles/slack_handler
+
+slack_webhook: "{{ lookup('ansible.builtin.env', 'SLACK_WEBHOOK') }}"

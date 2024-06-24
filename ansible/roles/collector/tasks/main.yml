@@ -1,0 +1,30 @@
+---
+- name: Check if bin install file exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/otel-{{ otel_version }}
+  register: otel_installed
+
+- ansible.builtin.include_tasks: download.yml
+  when: not otel_installed.stat.exists
+
+- name: Generate otel config file
+  ansible.builtin.template:
+    src: config.yaml
+    dest: /etc/otel/config.yaml
+    mode: "0755"
+  notify: Restart otel
+
+- name: Generate service file
+  ansible.builtin.template:
+    src: otel.service
+    dest: /etc/systemd/system/otel.service
+    mode: 0644
+  notify:
+    - Restart otel
+    - Restart journald
+
+- include_role: 
+    name: datadog
+  vars:
+    name: otel
+    version: "{{ otel_version }}"

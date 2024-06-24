@@ -7,12 +7,12 @@
 
 - name: existing_services_count
   ansible.builtin.debug:
-    msg: "current count: {{ existing_services.matched }}, desired count: {{ desired_count }}"
+    msg: "current count: {{ existing_services.matched }}, desired count: {{ desired_count }}, start: {{ service_start }}, end: {{ service_end }}"
 
-- name: Create config file for {{ client_role }}
-  ansible.builtin.template:
-    src: client-config.yml
-    dest: "/etc/avail-light/config.yml"
+- name: Create config file for {{ group_names[0] }}
+  ansible.builtin.copy:
+    src: "{{ group_names[0] }}.toml"
+    dest: "/etc/avail-light/config.toml"
     owner: "{{ avail_user }}"
     group: "{{ avail_user }}"
     mode: 0755

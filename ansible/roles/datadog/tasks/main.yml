@@ -3,6 +3,11 @@
   debug:
     msg: "role: {{ group_names[0] }}"
 
+- name: Fail if variable `datadog_api_key` is not defined
+  ansible.builtin.fail:
+    msg: "The variable 'datadog_api_key' is not defined. Needs env var DATADOG_API_KEY"
+  when: datadog_api_key == ""
+
 - name: Check if Datadog agent is already installed
   ansible.builtin.stat:
     path: "/lib/systemd/system/datadog-agent.service"
@@ -32,7 +37,6 @@
       notify:
         - Restart DD Agent
 
-# configure agent
 - name: Create datadog main config file
   ansible.builtin.template:
     src: datadog.yml

@@ -1,40 +1,49 @@
-- hosts: all
+- hosts: bootnode
   become: true
   gather_facts: true
   vars:
-    avail_version: v1.9.0
+    bootnode_version: v0.0.9
+    datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
+  tasks:
+    - block:
+      - include_role:
+          name: bootnode
+      rescue:
+      - include_role:
+          name: slack_alert
+          tasks_from: failure
+
+- hosts: lightnode:fatclient
+  become: true
+  gather_facts: true
+  vars:
+    avail_light_version: v1.9.1
     desired_count: 10
-    service_start: "{{ (groups['lightnodes'].index(inventory_hostname)) * desired_count }}"
-    service_end: "{{ (groups['lightnodes'].index(inventory_hostname) + 1) * desired_count }}"
-    lightnode:
-      client_role: avail-light
-  roles:
-    - role: lightclient
+    service_start: "{{ groups[groups.keys() | first].index(inventory_hostname) * desired_count }}"
+    service_end: "{{ (groups[groups.keys() | first].index(inventory_hostname) + 1) * desired_count }}"
+    datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
+  tasks:
+    - block:
+      - include_role:
+          name: lightclient
+      rescue:
+      - include_role:
+          name: slack_alert
+          tasks_from: failure
+  tags:
+    - lightclient
 
-
-# - hosts: all
-#   become: true
-#   gather_facts: true
-#   tasks:
-#     - name: Calculate service_start and service_end for lightnodes
-#       set_fact:
-#         host_index: "{{ groups['lightnodes'].index(inventory_hostname) + 1 }}"
-#         service_start: "{{ (groups['lightnodes'].index(inventory_hostname)) * 100 }}"
-#         service_end: "{{ (groups['lightnodes'].index(inventory_hostname) + 1) * 100 }}"
-    
-#     - name: Display calculated service_start and service_end for lightnodes
-#       debug:
-#         msg: "Host {{ inventory_hostname }} has service_start={{ service_start }} and service_end={{ service_end }}"
-#       when: "'lightnodes' in group_names"
-
-# TODO
-# Terraform with python to create inventory
-# Deploy nodes to digital ocean
-# inventory and group vars
-# Terraform to deploy dedicated RPC nodes
-# Deploy fat clients
-# Multiple bootnodes and server mode LCs, DO & latitude
-# cloudflare dns for all
-# Test reachability and monitors for bootnode and otel
-# datadog monitors on log errors for RPC, bootstraps and dht p2p
-# Deploy less nodes and auto cleanup
+- hosts: otel
+  become: true
+  gather_facts: true
+  vars:
+    otel_version: 0.97.0
+    datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
+  tasks:
+    - block:
+      - include_role:
+          name: collector
+      rescue:
+      - include_role:
+          name: slack_alert
+          tasks_from: failure

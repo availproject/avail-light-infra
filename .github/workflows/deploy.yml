@@ -2,38 +2,26 @@ name: Deploy Lightclients
 
 on:
   push:
+    branches: [ "**" ]
 
 jobs:
-  ansible:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ansible
-    env:
-      NETWORK: turing
-      DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+  hex:
+    uses: ./.github/workflows/common.yml
+    with:
+      network: hex
+    secrets:
+      datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
 
-    steps:
-    - name: checkout code
-      uses: actions/checkout@v3
-    
-    - name: configure ssh key
-      run: |
-        echo "${{ secrets.SSH_KEY }}" > key && chmod 600 key
-
-    - name: view ansible inventory
-      run: ansible-inventory --inventory inventory/${{ env.NETWORK }}.ini --list
-
-    - name: ping all
-      run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
-  
-    - name: run playbook
-      run: ansible-playbook playbook.yml --inventory inventory/${{ env.NETWORK }}.ini
-    
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
-      if: ${{ failure() }}
-      with:
-        wait-timeout-minutes: 2
-
-# TODO: test that datadog api keys undefined fails
+# TODO: 
+# Trigger avail-light release from another repo with version in payload
+# include ansible check mode on PRs
+# Add branch protection rules
+# Monitors
+  # system internal service restarts > 50
+  # otel & bootnode port connections
+  # slack channel to monitor alerts
+  # send alerts to pagerduty -> slack (with tagging)
+  # create SLO/SLIs

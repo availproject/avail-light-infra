@@ -1,0 +1,28 @@
+
+- name: Create folder for configs
+  ansible.builtin.file:
+    path: /etc/otel
+    state: directory
+    mode: 0777
+
+- name: Download otel collector
+  ansible.builtin.get_url:
+    url: https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v{{ otel_version }}/otelcol-contrib_{{ otel_version }}_linux_amd64.tar.gz
+    dest: /tmp/otelcol-{{ otel_version }}.tar.gz
+    mode: 0600
+    force: true
+    timeout: 300
+
+- name: Extract the contrib archive
+  unarchive:
+    src: "/tmp/otelcol-{{ otel_version }}.tar.gz"
+    dest: "/usr/local/bin"
+    remote_src: true
+
+- name: Rename otelcol-contrib to otelcol
+  command: mv /usr/local/bin/otelcol-contrib /usr/local/bin/otel-{{ otel_version }}
+
+- name: Clean up otel download file
+  file:
+    path: "/tmp/otelcol-{{ otel_version }}.tar.gz"
+    state: absent

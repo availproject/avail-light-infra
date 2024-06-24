@@ -1,2 +1,6 @@
----
-# defaults file for ansible/roles/avail-light
+service_prefix: avail-{{ group_names[0] }}
+service_dir: /etc/systemd/system
+avail_user: avail
+avail_home: /var/lib/avail-light
+
+# TODO: include vars.yml for hex turing mainnet incase values change

@@ -1,0 +1,15 @@
+init_config:
+
+instances:
+  - unit_names:
+{% for num in range(service_start | int, service_end | int) %}
+    - {{ service_prefix }}-{{ num }}.service
+{% endfor %}
+
+    substate_status_mapping:
+{% for num in range(service_start | int, service_end | int) %}
+      {{ service_prefix }}-{{ num }}.service:
+        running: ok
+        exited: critical
+        stopped: critical
+{% endfor %}

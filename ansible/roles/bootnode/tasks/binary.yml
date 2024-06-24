@@ -1,0 +1,74 @@
+---
+
+- name: Remove any existing versions
+  shell: rm /usr/local/bin/avail* /opt/avail* || true
+  ignore_errors: true
+  
+- name: Download avail-light-bootstrap binary
+  block:
+    - name: Download avail-light-bootstrap archive on x86_64 architecture
+      register: avail_download_results
+      ansible.builtin.get_url:
+        url: https://github.com/availproject/avail-light-bootstrap/releases/download/{{ bootnode_version }}/avail-light-bootstrap-linux-amd64.tar.gz
+        dest: /opt/avail_light_{{ bootnode_version }}_linux_amd.tar.gz
+        mode: 0600
+        force: false
+        timeout: 300
+      when: ansible_architecture == "x86_64"
+    - name: Download avail-light-bootstrap archive on aarch64 architecture
+      register: avail_download_results
+      ansible.builtin.get_url:
+        url: https://github.com/availproject/avail-light-bootstrap/releases/download/{{ bootnode_version }}/avail-light-bootstrap-linux-arm64.tar.gz #arm64 or aarch64
+        dest: /opt/avail_light_{{ bootnode_version }}_linux_aarch64.tar.gz
+        mode: 0600
+        force: false
+        timeout: 300
+      when: ansible_architecture == "aarch64"
+
+- name: Extract avail-light-bootstrap archive
+  block:
+    - name: Extract avail-light-bootstrap archive on x86_64 architecture
+      ansible.builtin.unarchive:
+        src: /opt/avail_light_{{ bootnode_version }}_linux_amd.tar.gz
+        dest: /opt
+        remote_src: true
+      when: ansible_architecture == "x86_64"
+    - name: Extract avail-light-bootstrap archive on aarch64 architecture
+      ansible.builtin.unarchive:
+        src: /opt/avail_light_{{ bootnode_version }}_linux_aarch64.tar.gz
+        dest: /opt
+        remote_src: true
+      when: ansible_architecture == "aarch64"
+
+- name: Create a symbolic link for avail-light-bootstrap
+  block:
+    - name: Create a symbolic link on x86_64 architecture
+      ansible.builtin.file:
+        src: /opt/avail-light-bootstrap-linux-amd64
+        dest: /usr/local/bin/{{ service_prefix }}-{{ bootnode_version }}
+        state: link
+      when: ansible_architecture == "x86_64"
+    - name: Create a symbolic link on aarch64 architecture
+      ansible.builtin.file:
+        src: /opt/avail-light-bootstrap-linux-arm64 #arm64 or aarch64
+        dest: /usr/local/bin/{{ service_prefix }}-{{ bootnode_version }}
+        state: link
+      when: ansible_architecture == "aarch64"
+
+- name: Create avail folders
+  block:
+    - name: Create folder for avail data
+      ansible.builtin.file:
+        path: "{{ avail_home }}"
+        owner: "{{ avail_user }}"
+        group: "{{ avail_user }}"
+        state: directory
+        mode: 0777
+
+    - name: Create folder for avail configs
+      ansible.builtin.file:
+        path: /etc/avail-light
+        owner: "{{ avail_user }}"
+        group: "{{ avail_user }}"
+        state: directory
+        mode: 0777
