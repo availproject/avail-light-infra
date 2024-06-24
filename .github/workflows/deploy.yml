@@ -9,7 +9,6 @@ on:
 
 jobs:
   hex:
-    if: false
     uses: ./.github/workflows/common.yml
     with:
       network: hex
