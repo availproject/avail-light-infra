@@ -8,13 +8,6 @@ on:
     branches: [ "**" ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Echo the client payload
-      if: github.event.client_payload
-      run: echo "${{ ) }}" 
-
   hex:
     if: false
     uses: ./.github/workflows/common.yml
