@@ -11,7 +11,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ toJson(github.event.client_payload) }}" 
+    - name: Echo the client payload
+      if: github.event.client_payload
+      run: echo "${{ toJson(github.event.client_payload) }}" 
 
   hex:
     if: false
