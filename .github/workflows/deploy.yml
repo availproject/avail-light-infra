@@ -8,18 +8,12 @@ on:
     branches: [ "**" ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Echo the client payload
-      if: github.event.client_payload
-      run: echo "${{ toJson(github.event.client_payload) }}" 
-
   hex:
     if: false
     uses: ./.github/workflows/common.yml
     with:
       network: hex
+      avail_light_version: ${{ github.event.client_payload || 'v1.9.1' }}
     secrets:
       datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
