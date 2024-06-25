@@ -7,20 +7,19 @@ on:
   workflow_dispatch:
     inputs:
       avail_light_version:
-        description: 'avail-light release version to deploy'
+        description: 'Version to deploy'
         required: true
         default: 'v1.9.1'
       network:
-        description: 'network to deploy to'
+        description: 'Network'
         required: true
         default: hex
       
-
 jobs:
   hex:
     uses: ./.github/workflows/common.yml
     with:
-      network: ${{ inputs.network }}
+      network: ${{ inputs.network || 'hex' }}
       avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version }}
     secrets:
       datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
