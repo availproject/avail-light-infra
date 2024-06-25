@@ -20,8 +20,8 @@
     avail_light_version: "{{ lookup('env', 'AVAIL_LIGHT_VERSION') }}"
     datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
     desired_count: 10
-    service_start: "{{ groups[groups.keys() | first].index(inventory_hostname) * desired_count }}"
-    service_end: "{{ (groups[groups.keys() | first].index(inventory_hostname) + 1) * desired_count }}"
+    service_start: "{{ groups[group_names[0]].index(inventory_hostname) * desired_count }}"
+    service_end: "{{ (groups[group_names[0]].index(inventory_hostname) + 1) * desired_count }}"
   tasks:
     - block:
       - include_role:

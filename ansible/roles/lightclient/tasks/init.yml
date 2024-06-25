@@ -109,6 +109,7 @@
         create: yes
         block: |
           alias logs="journalctl -u avail-* -f"
+          alias svc='cd /etc/systemd/system/'
       become: yes
 
     - name: Copy reset script to remote host
