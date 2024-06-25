@@ -33,7 +33,7 @@
     - name: Print script output
       debug:
         var: script_output.stdout
-  when: existing_services.matched < desired_count or config_file.changed
+  when: existing_services.matched < desired_count or config_file.changed or not bin_installed.stat.exists
 
 - name: Downscale services
   shell: |
