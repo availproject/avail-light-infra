@@ -9,3 +9,4 @@ logs:
       include_units:
           - {{ service_prefix }}-{{ num }}.service
     {%- endfor %}
+    
