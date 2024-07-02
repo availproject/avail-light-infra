@@ -27,7 +27,7 @@ exporters:
     endpoint: "0.0.0.0:8889"
     const_labels:
       network: "lightclient.{{ network }}"
-    metric_expiration: 10m
+    metric_expiration: 5m
     resource_to_telemetry_conversion:
       enabled: true
 
