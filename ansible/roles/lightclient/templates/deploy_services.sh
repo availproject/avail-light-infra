@@ -25,7 +25,7 @@ ExecStart=${SERVICE_PREFIX}-${CLIENT_VERSION} --clean \
 --config /etc/avail-light/config.toml \
 --network {{ network }} \
 {% if group_names[0] == "fatclient" %}
-
+--block-matrix-partition ${INDEX}/${SERVICE_END}
 {% endif %}
 
 Restart=on-failure

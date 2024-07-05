@@ -3,17 +3,18 @@ name: Deploy Lightclients
 on:
   repository_dispatch:
     types: ["binary_release"]
-    
+
   workflow_dispatch:
     inputs:
-      avail_light_version:
-        description: 'Version to deploy'
+      bootnode_version:
+        description: 'Bootnode version'
         required: true
-        default: 'v1.9.1'
+      avail_light_version:
+        description: 'LC version'
+        required: true
       network:
         description: 'Network'
         required: true
-        default: hex
       
 jobs:
   hex:
@@ -21,6 +22,7 @@ jobs:
     with:
       network: ${{ inputs.network || 'hex' }}
       avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version }}
+      bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version }}
     secrets:
       datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -31,9 +33,11 @@ jobs:
 # Trigger avail-light release from another repo with version in payload
 # include ansible check mode on PRs
 # Add branch protection rules
+# For Dashboard change Otel datadog source to basedn tag basedn:lightclient.hex
 # Monitors
   # system internal service restarts > 50
   # otel & bootnode port connections
   # slack channel to monitor alerts
   # send alerts to pagerduty -> slack (with tagging)
   # create SLO/SLIs
+

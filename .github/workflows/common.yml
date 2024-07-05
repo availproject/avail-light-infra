@@ -6,6 +6,9 @@ on:
       network:
         required: true
         type: string
+      bootnode_version:
+        required: false
+        type: string
       avail_light_version:
         required: true
         type: string
@@ -23,6 +26,7 @@ on:
 env:
   NETWORK: ${{ inputs.network }}
   AVAIL_LIGHT_VERSION: ${{ inputs.avail_light_version }}
+  BOOTNODE_VERSION: ${{ inputs.bootnode_version }}
   DATADOG_API_KEY: ${{ secrets.datadog_api_key }}
   FORCE_COLOR: "1"
   GITHUB_WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -99,10 +103,12 @@ jobs:
       run: ansible all -m ping --inventory inventory/${{ env.NETWORK }}.ini
   
     - name: run bootnode playbook
+      if: ${{ env.BOOTNODE_VERSION }}
       run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit bootnode
 
     - name: run lightclient playbook
-      run: ansible-playbook playbook.yml --tags lightclient -i inventory/${{ env.NETWORK }}.ini
+      if: ${{ env.AVAIL_LIGHT_VERSION }}
+      run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --tags lightclient
 
     - name: run otel playbook
       run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit otel

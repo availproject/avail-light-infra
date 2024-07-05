@@ -2,7 +2,7 @@
   become: true
   gather_facts: true
   vars:
-    bootnode_version: v0.1.3
+    bootnode_version: "{{ lookup('env', 'BOOTNODE_VERSION') }}"
     datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
   tasks:
     - block:
