@@ -110,8 +110,8 @@ jobs:
       if: ${{ env.AVAIL_LIGHT_VERSION }}
       run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --tags lightclient
 
-    - name: run otel playbook
-      run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit otel
+    # - name: run otel playbook
+    #   run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit otel
     
   #   - name: Setup upterm session
   #     uses: lhotari/action-upterm@v1
