@@ -14,7 +14,7 @@ on:
         required: true
       network:
         description: 'Network'
-        required: true
+        required: false
       
 jobs:
   hex:
