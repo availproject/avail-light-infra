@@ -3,15 +3,19 @@ name: Deploy Lightclients
 on:
   repository_dispatch:
     types: ["binary_release"]
+  
+  push:
+    branches:
+      - main
 
   workflow_dispatch:
     inputs:
       bootnode_version:
         description: 'Bootnode version'
-        required: true
+        required: false
       avail_light_version:
         description: 'LC version'
-        required: true
+        required: false
       network:
         description: 'Network'
         required: false
@@ -21,8 +25,8 @@ jobs:
     uses: ./.github/workflows/common.yml
     with:
       network: ${{ inputs.network || 'hex' }}
-      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version }}
-      bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version }}
+      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version || v1.10.2 }}
+      bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version || v0.1.3 }}
     secrets:
       datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -30,14 +34,16 @@ jobs:
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
 
 # TODO: 
-# Trigger avail-light release from another repo with version in payload
-# include ansible check mode on PRs
+# Fix avail-light release error from avail-light repo in payload
+# Deployment for mainnet
 # Add branch protection rules
 # For Dashboard change Otel datadog source to basedn tag basedn:lightclient.hex
-# Monitors
-  # system internal service restarts > 50
-  # otel & bootnode port connections
-  # slack channel to monitor alerts
+# remove version from dashboard. should be source=basedn mode origin
+# Add 
+
+# Add Monitors
+  # system internal service restarts > 20
+  # otel & bootnode port connections not reachable
+  # slack channel to monitor alerts for mainnet/turing/hex
   # send alerts to pagerduty -> slack (with tagging)
-  # create SLO/SLIs
 
