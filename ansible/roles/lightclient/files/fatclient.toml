@@ -10,9 +10,5 @@ replication_factor = 2
 max_negotiating_inbound_streams = 10000
 task_command_buffer_size = 30000
 per_connection_event_buffer_size = 10000
-<<<<<<< HEAD
-bootstrap_period = 120
-=======
 bootstrap_period = 120
 block_processing_delay = 0
->>>>>>> ad48ae98aaecb6c489fca5c9b3cf00ea4fb1b86a
