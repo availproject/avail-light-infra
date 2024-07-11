@@ -39,7 +39,6 @@ jobs:
 # Add branch protection rules
 # For Dashboard change Otel datadog source to basedn tag basedn:lightclient.hex
 # remove version from dashboard. should be source=basedn mode origin
-# Add 
 
 # Add Monitors
   # system internal service restarts > 20
