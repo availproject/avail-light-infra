@@ -1,3 +1,7 @@
+- name: Fail if variable `bootnode_version` is not defined
+  ansible.builtin.fail:
+    msg: "The variable 'bootnode_version' is not defined. Needs env var BOOTNODE_VERSION"
+  when: bootnode_version == ""
 
 - name: Include vars for {{ network }} network
   include_vars:
