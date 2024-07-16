@@ -9,7 +9,7 @@
     - name: Download avail-light-bootstrap archive on x86_64 architecture
       register: avail_download_results
       ansible.builtin.get_url:
-        url: https://github.com/availproject/avail-light-bootstrap/releases/download/{{ bootnode_version }}/avail-light-bootstrap-linux-amd64.tar.gz
+        url: https://github.com/availproject/avail-light/releases/download/{{ bootnode_version }}/avail-light-bootstrap-linux-amd64.tar.gz
         dest: /opt/avail_light_{{ bootnode_version }}_linux_amd.tar.gz
         mode: 0600
         force: false
@@ -17,8 +17,8 @@
       when: ansible_architecture == "x86_64"
     - name: Download avail-light-bootstrap archive on aarch64 architecture
       register: avail_download_results
-      ansible.builtin.get_url:
-        url: https://github.com/availproject/avail-light-bootstrap/releases/download/{{ bootnode_version }}/avail-light-bootstrap-linux-arm64.tar.gz #arm64 or aarch64
+      ansible.builtin.get_url: 
+        url: https://github.com/availproject/avail-light/releases/download/{{ bootnode_version }}/avail-light-bootstrap-linux-arm64.tar.gz #arm64 or aarch64
         dest: /opt/avail_light_{{ bootnode_version }}_linux_aarch64.tar.gz
         mode: 0600
         force: false
