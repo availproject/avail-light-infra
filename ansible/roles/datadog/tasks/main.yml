@@ -52,6 +52,7 @@
     mode: 0644
   notify:
     - Restart journald
+    - Restart DD Agent
 
 - name: Create datadog systemd config
   ansible.builtin.template:
