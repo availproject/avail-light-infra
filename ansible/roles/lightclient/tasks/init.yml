@@ -15,7 +15,7 @@
     - name: Download avail-light archive on x86_64 architecture
       register: avail_download_results
       ansible.builtin.get_url:
-        url: https://github.com/availproject/avail-light/releases/download/{{ client_version }}/avail-light-linux-amd64.tar.gz
+        url: https://github.com/availproject/avail-light/releases/download/{{ client_version }}/avail-light-client-linux-amd64.tar.gz
         dest: /opt/avail_light_{{ client_version }}_linux_amd.tar.gz
         mode: 0600
         force: false
@@ -24,7 +24,7 @@
     - name: Download avail-light archive on aarch64 architecture
       register: avail_download_results
       ansible.builtin.get_url:
-        url: https://github.com/availproject/avail-light/releases/download/{{ client_version }}/avail-light-linux-arm64.tar.gz #arm64 or aarch64
+        url: https://github.com/availproject/avail-light/releases/download/{{ client_version }}/avail-light-client-linux-arm64.tar.gz #arm64 or aarch64
         dest: /opt/avail_light_{{ client_version }}_linux_aarch64.tar.gz
         mode: 0600
         force: false
