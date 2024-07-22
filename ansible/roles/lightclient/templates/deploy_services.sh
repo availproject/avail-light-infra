@@ -21,9 +21,11 @@ Wants=network-online.target
 ExecStart=${SERVICE_PREFIX}-${CLIENT_VERSION} --clean \
 --http-server-port $((7000 + INDEX)) \
 --seed "${HOSTNAME}-${INDEX}" \
---port $((37000 + INDEX)) \
+--port $((38000 + INDEX)) \
 --config /etc/avail-light/config.toml \
---network {{ network }} \
+--verbosity debug \
+--avail-path {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/db \
+--identity {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/identity.toml \
 {% if group_names[0] == "fatclient" %}
 --block-matrix-partition $((INDEX + 1))/40
 {% endif %}

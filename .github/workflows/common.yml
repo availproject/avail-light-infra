@@ -103,9 +103,13 @@ jobs:
       if: ${{ env.BOOTNODE_VERSION }}
       run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit bootnode
 
-    - name: run lightclient playbook
+    - name: run lightnode playbook
       if: ${{ env.AVAIL_LIGHT_VERSION }}
-      run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --tags lightclient
+      run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit lightnode
+
+    - name: run fatclient playbook
+      if: ${{ env.AVAIL_LIGHT_VERSION }}
+      run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit fatclient
 
     # - name: run otel playbook
     #   run: ansible-playbook playbook.yml -i inventory/${{ env.NETWORK }}.ini --limit otel

@@ -13,13 +13,33 @@
           name: slack_alert
           tasks_from: failure
 
-- hosts: lightnode:fatclient
+- hosts: lightnode
   become: true
   gather_facts: true
   vars:
     avail_light_version: "{{ lookup('env', 'AVAIL_LIGHT_VERSION') }}"
     datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
-    desired_count: 20
+    desired_count: 25
+    service_start: "{{ groups[group_names[0]].index(inventory_hostname) * desired_count }}"
+    service_end: "{{ (groups[group_names[0]].index(inventory_hostname) + 1) * desired_count }}"
+  tasks:
+    - block:
+      - include_role:
+          name: lightclient
+      rescue:
+      - include_role:
+          name: slack_alert
+          tasks_from: success
+  tags:
+    - lightclient
+
+- hosts: fatclient
+  become: true
+  gather_facts: true
+  vars:
+    avail_light_version: "{{ lookup('env', 'AVAIL_LIGHT_VERSION') }}"
+    datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
+    desired_count: 8
     service_start: "{{ groups[group_names[0]].index(inventory_hostname) * desired_count }}"
     service_end: "{{ (groups[group_names[0]].index(inventory_hostname) + 1) * desired_count }}"
   tasks:
