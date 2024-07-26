@@ -1,6 +1,4 @@
 http_server_host = "0.0.0.0"
-log_level = "INFO"
-avail_path = "/var/lib/avail-light/avail_path"
 log_format_json = true
 
 operation_mode='client'

@@ -1,6 +1,4 @@
 http_server_host = "0.0.0.0"
-log_level = "INFO"
-avail_path = "/var/lib/avail-light/avail_path"
 log_format_json = true
 
 operation_mode='server'
@@ -12,5 +10,5 @@ task_command_buffer_size = 30000
 per_connection_event_buffer_size = 10000
 max_negotiating_inbound_streams = 10000
 bootstrap_period = 120
-block_processing_delay = 0
-automatic_server_mode = false 
+block_processing_delay = 20
+automatic_server_mode = false
