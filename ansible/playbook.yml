@@ -29,7 +29,7 @@
       rescue:
       - include_role:
           name: slack_alert
-          tasks_from: success
+          tasks_from: failure
   tags:
     - lightclient
 
