@@ -1,0 +1,8 @@
+- name: Notify Slack
+  slack:
+    username: 'Ansible'
+    color: good
+    token: "{{ slack_webhook }}"
+    channel: "#avail-deployments"
+    msg: "Deployment successful on *{{ ansible_hostname }} ({{ inventory_hostname }})* \n"
+  delegate_to: localhost
