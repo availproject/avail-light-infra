@@ -25,24 +25,10 @@ jobs:
     uses: ./.github/workflows/common.yml
     with:
       network: ${{ inputs.network || 'hex' }}
-      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version || 'avail-light-client-v1.11.0' }}
+      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version || 'avail-light-client-v1.11.1' }}
       bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version || 'avail-light-bootstrap-v0.1.4-rc1' }}
     secrets:
       datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-
-# TODO: 
-# Fix avail-light release error from avail-light repo in payload
-# Deployment for mainnet
-# Add branch protection rules
-# For Dashboard change Otel datadog source to basedn tag basedn:lightclient.hex
-# remove version from dashboard. should be source=basedn mode origin
-
-# Add Monitors
-  # system internal service restarts > 20
-  # otel & bootnode port connections not reachable
-  # slack channel to monitor alerts for mainnet/turing/hex
-  # send alerts to pagerduty -> slack (with tagging)
-

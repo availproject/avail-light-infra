@@ -19,7 +19,7 @@
   vars:
     avail_light_version: "{{ lookup('env', 'AVAIL_LIGHT_VERSION') }}"
     datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
-    desired_count: 25
+    desired_count: "{{ desired_count_lightnode }}"
     service_start: "{{ groups[group_names[0]].index(inventory_hostname) * desired_count }}"
     service_end: "{{ (groups[group_names[0]].index(inventory_hostname) + 1) * desired_count }}"
   tasks:
@@ -39,7 +39,7 @@
   vars:
     avail_light_version: "{{ lookup('env', 'AVAIL_LIGHT_VERSION') }}"
     datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
-    desired_count: 8
+    desired_count: "{{ desired_count_fatclient }}"
     service_start: "{{ groups[group_names[0]].index(inventory_hostname) * desired_count }}"
     service_end: "{{ (groups[group_names[0]].index(inventory_hostname) + 1) * desired_count }}"
   tasks:

@@ -22,3 +22,5 @@ ${otel.hostname} ansible_host=${otel.ip}
 ansible_ssh_private_key_file=${network}_key
 ansible_user=root
 network=${network}
+desired_count_lightnode=25
+desired_count_fatclient=8
