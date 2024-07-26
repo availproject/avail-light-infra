@@ -23,7 +23,8 @@ ExecStart=${SERVICE_PREFIX}-${CLIENT_VERSION} --clean \
 --seed "${HOSTNAME}-${INDEX}" \
 --port $((38000 + INDEX)) \
 --config /etc/avail-light/config.toml \
---verbosity debug \
+--network {{ network }} \
+--verbosity trace \
 --avail-path {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/db \
 --identity {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/identity.toml \
 {% if group_names[0] == "fatclient" %}
@@ -32,12 +33,9 @@ ExecStart=${SERVICE_PREFIX}-${CLIENT_VERSION} --clean \
 
 Restart=on-failure
 RestartSec=5s
-
 Type=exec
-
 User=root
 Group=root
-
 TimeoutStartSec=infinity
 TimeoutStopSec=600
 

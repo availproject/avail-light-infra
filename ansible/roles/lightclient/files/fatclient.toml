@@ -1,5 +1,4 @@
 http_server_host = "0.0.0.0"
-log_level = "INFO"
 log_format_json = true
 
 operation_mode='client'
@@ -13,8 +12,3 @@ per_connection_event_buffer_size = 10000
 bootstrap_period = 120
 block_processing_delay = 0
 automatic_server_mode = false
-
-bootstraps = ["/dns/bootnode.1.lightclient.mainnet.avail.so/tcp/37000/p2p/12D3KooW9x9qnoXhkHAjdNFu92kMvBRSiFBMAoC5NnifgzXjsuiM"]
-full_node_ws = ["wss://zeref-api.slowops.xyz/ws"]
-genesis_hash = "b91746b45e0346cc2f815a520b9c6cb4d5c0902af848db0a80f85932d2e8276a"
-ot_collector_endpoint = "http://otel.lightclient.mainnet.avail.so:4317"
