@@ -12,4 +12,3 @@ max_negotiating_inbound_streams = 10000
 bootstrap_period = 120
 block_processing_delay = 20
 automatic_server_mode = false
-full_node_ws = ["{{ws_endpoint}}"]
