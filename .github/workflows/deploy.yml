@@ -19,7 +19,6 @@ on:
       network:
         description: 'Network'
         required: false
-     
       
 jobs:
   hex:
