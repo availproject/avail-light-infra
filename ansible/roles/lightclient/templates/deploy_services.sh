@@ -25,6 +25,7 @@ ExecStart=${SERVICE_PREFIX}-${CLIENT_VERSION} --clean \
 --config /etc/avail-light/config.toml \
 --network {{ network }} \
 --verbosity debug \
+--client-alias ${SERVICE_PREFIX}-${INDEX} \
 --avail-path {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/db \
 --identity {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/identity.toml \
 {% if group_names[0] == "fatclient" %}

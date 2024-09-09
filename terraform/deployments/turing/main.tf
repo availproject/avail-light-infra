@@ -1,6 +1,6 @@
 
 data "digitalocean_project" "project" {
-  name = "Lightclient-Mainnet"
+  name = "Lightclient-Turing"
 }
 
 module "bootnode" {
@@ -13,7 +13,7 @@ module "bootnode" {
   tags            = ["role:bootnode"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
-  project      = data.digitalocean_project.project
+  project         = data.digitalocean_project.project
 }
 
 module "otel" {
@@ -26,7 +26,7 @@ module "otel" {
   tags            = ["role:otel"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
-  project      = data.digitalocean_project.project
+  project         = data.digitalocean_project.project
 }
 
 module "lightnode" {
@@ -39,8 +39,8 @@ module "lightnode" {
   tags            = ["role:lightnode"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
-  project      = data.digitalocean_project.project
-  
+  project         = data.digitalocean_project.project
+
 }
 
 module "fatclient" {
@@ -53,7 +53,7 @@ module "fatclient" {
   tags            = ["role:fatclient"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
-  project      = data.digitalocean_project.project
+  project         = data.digitalocean_project.project
 }
 
 
@@ -74,7 +74,7 @@ resource "local_file" "ansible_inventory" {
 }
 
 variable "network" {
-  default = "mainnet"
+  default = "turing"
 }
 
 output "lightnodes" {

@@ -1,6 +1,6 @@
 
 data "digitalocean_project" "project" {
-  name = "Lightclient Hex"
+  name = "Lightclient-Hex"
 }
 
 module "bootnode" {
