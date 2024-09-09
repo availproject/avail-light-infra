@@ -1,6 +1,6 @@
 
 data "digitalocean_project" "project" {
-  name = "Lightclient Turing"
+  name = "Lightclient-Turing"
 }
 
 module "bootnode" {

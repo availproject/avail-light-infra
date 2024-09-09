@@ -8,6 +8,10 @@
   debug:
     msg: "avail_light_version: {{ avail_light_version }}"
 
+- name: Include vars for {{ network }} network
+  include_vars:
+    file: "{{ network }}.yml"
+    
 - name: Setup lightnode
   vars:
     client_version:  "{{ avail_light_version }}"

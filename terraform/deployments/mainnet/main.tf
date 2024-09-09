@@ -1,6 +1,6 @@
 
 data "digitalocean_project" "project" {
-  name = "Lightclient Mainnet"
+  name = "Lightclient-Mainnet"
 }
 
 module "bootnode" {
