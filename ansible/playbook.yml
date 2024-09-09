@@ -58,6 +58,7 @@
   gather_facts: true
   vars:
     otel_version: 0.97.0
+    avail_light_version: "{{ lookup('env', 'AVAIL_LIGHT_VERSION') | regex_replace('^.*-(v.*)$', '\\1') }}"
     datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
   tasks:
     - block:

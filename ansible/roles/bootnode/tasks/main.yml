@@ -22,7 +22,9 @@
     owner: "{{ avail_user }}"
     group: "{{ avail_user }}"
     mode: 0755
-
+  notify:
+    - Restart bootnode
+    
 - name: Copy service file
   ansible.builtin.template:
     src: "{{ group_names[0] }}.service"
