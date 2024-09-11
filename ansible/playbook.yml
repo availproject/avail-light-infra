@@ -37,7 +37,7 @@
   become: true
   gather_facts: true
   vars:
-    avail_light_version: "{{ lookup('env', 'AVAIL_LIGHT_VERSION') }}"
+    avail_light_version: "{{ lookup('env', 'FATCLIENT_VERSION') }}"
     datadog_api_key: "{{ lookup('env', 'DATADOG_API_KEY') }}"
     desired_count: "{{ desired_count_fatclient }}"
     service_start: "{{ groups[group_names[0]].index(inventory_hostname) * desired_count }}"
