@@ -47,7 +47,7 @@ module "fatclient" {
   source          = "../../modules/do"
   node_count      = 2
   image           = "ubuntu-22-04-x64"
-  spec            = "c-32-intel"
+  spec            = "c-16-intel"
   node_type       = "fatclient"
   region          = "ams3"
   tags            = ["role:fatclient"]
