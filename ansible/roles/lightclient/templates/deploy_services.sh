@@ -27,10 +27,11 @@ ExecStart=${SERVICE_PREFIX}-${CLIENT_VERSION} --clean \
 --verbosity debug \
 --client-alias ${SERVICE_PREFIX}-${INDEX} \
 --avail-path {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/db \
---identity {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/identity.toml \
---webrtc-port $((5200 + INDEX)) \
 {% if group_names[0] == "fatclient" %}
 --block-matrix-partition $((INDEX + 1))/40
+{% elif group_names[0] == "lightnode" %}
+--webrtc-port $((5200 + INDEX)) \
+--identity {{ avail_home }}/${SERVICE_PREFIX}-${INDEX}/identity.toml
 {% endif %}
 
 Restart=on-failure

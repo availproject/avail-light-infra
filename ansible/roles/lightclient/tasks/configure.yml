@@ -25,7 +25,8 @@
         src: deploy_services.sh
         dest: "{{ avail_home }}/deploy_services.sh"
         mode: '0755'
-
+        force: yes
+        
     - name: Run the deploy script
       shell: "{{ avail_home }}/deploy_services.sh"
       register: script_output

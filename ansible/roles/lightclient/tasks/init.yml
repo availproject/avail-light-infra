@@ -110,6 +110,7 @@
         block: |
           alias logs="journalctl -u avail-* -f"
           alias svc='cd /etc/systemd/system/'
+          alias home='cd /var/lib/avail-light'
       become: yes
 
     - name: Copy reset script to remote host
