@@ -12,8 +12,10 @@
     src: config.yaml
     dest: /etc/otel/config.yaml
     mode: "0755"
-  notify: Restart otel
-
+  notify: 
+    - Restart otel
+    - Restart journald
+    
 - name: Generate service file
   ansible.builtin.template:
     src: otel.service

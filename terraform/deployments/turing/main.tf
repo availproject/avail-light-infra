@@ -20,7 +20,7 @@ module "otel" {
   source          = "../../modules/do"
   node_count      = 1
   image           = "ubuntu-22-04-x64"
-  spec            = "c-8"
+  spec            = "s-4vcpu-8gb-intel"
   node_type       = "otel"
   region          = "ams3"
   tags            = ["role:otel"]
@@ -31,9 +31,9 @@ module "otel" {
 
 module "lightnode" {
   source          = "../../modules/do"
-  node_count      = 2
+  node_count      = 1
   image           = "ubuntu-22-04-x64"
-  spec            = "c-32-intel"
+  spec            = "c-16-intel"
   node_type       = "lightnode"
   region          = "ams3"
   tags            = ["role:lightnode"]
@@ -45,9 +45,9 @@ module "lightnode" {
 
 module "fatclient" {
   source          = "../../modules/do"
-  node_count      = 2
+  node_count      = 1
   image           = "ubuntu-22-04-x64"
-  spec            = "c-32-intel"
+  spec            = "c-16-intel"
   node_type       = "fatclient"
   region          = "ams3"
   tags            = ["role:fatclient"]

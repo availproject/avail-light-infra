@@ -33,7 +33,7 @@ module "lightnode" {
   source          = "../../modules/do"
   node_count      = 2
   image           = "ubuntu-22-04-x64"
-  spec            = "c-32-intel"
+  spec            = "c-16-intel"
   node_type       = "lightnode"
   region          = "ams3"
   tags            = ["role:lightnode"]
