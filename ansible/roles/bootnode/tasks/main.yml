@@ -3,6 +3,10 @@
     msg: "The variable 'bootnode_version' is not defined. Needs env var BOOTNODE_VERSION"
   when: bootnode_version == ""
 
+- name: Debug bootnode_version
+  debug:
+    msg: "bootnode_version: {{ bootnode_version }}"
+
 - name: Include vars for {{ network }} network
   include_vars:
     file: "{{ network }}.yml"

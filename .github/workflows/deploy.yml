@@ -3,10 +3,6 @@ name: Deploy Lightclients
 on:
   repository_dispatch:
     types: ["binary_release"]
-  
-  push:
-    branches:
-      - main
 
   workflow_dispatch:
     inputs:
@@ -28,9 +24,9 @@ jobs:
     uses: ./.github/workflows/common.yml
     with:
       network: ${{ inputs.network || 'hex' }}
-      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version || 'avail-light-client-v1.12.0-rc1' }}
-      fatclient_version: ${{ github.event.client_payload.fatclient_version || inputs.fatclient_version || 'avail-light-fat-v1.12.0-rc3' }}
-      bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version || 'avail-light-bootstrap-v0.1.4-rc1' }}
+      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version }}
+      fatclient_version: ${{ github.event.client_payload.fatclient_version || inputs.fatclient_version }}
+      bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version }}
     secrets:
       datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
