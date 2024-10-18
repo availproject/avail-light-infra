@@ -32,3 +32,29 @@ jobs:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+
+  turing:
+    uses: ./.github/workflows/common.yml
+    with:
+      network: ${{ inputs.network || 'turing' }}
+      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version }}
+      fatclient_version: ${{ github.event.client_payload.fatclient_version || inputs.fatclient_version }}
+      bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version }}
+    secrets:
+      datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+
+  mainnet:
+    uses: ./.github/workflows/common.yml
+    with:
+      network: ${{ inputs.network || 'mainnet' }}
+      avail_light_version: ${{ github.event.client_payload.avail_light_version || inputs.avail_light_version }}
+      fatclient_version: ${{ github.event.client_payload.fatclient_version || inputs.fatclient_version }}
+      bootnode_version: ${{ github.event.client_payload.bootnode_version || inputs.bootnode_version }}
+    secrets:
+      datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}

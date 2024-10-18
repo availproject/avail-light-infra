@@ -54,6 +54,9 @@
         dest: /usr/local/bin/{{ service_prefix }}-{{ bootnode_version }}
         state: link
       when: ansible_architecture == "aarch64"
+  notify:
+    - Restart bootnode
+    - Restart DD Agent
 
 - name: Create avail folders
   block:

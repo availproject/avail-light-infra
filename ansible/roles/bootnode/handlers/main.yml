@@ -11,3 +11,9 @@
     state: restarted
     name: systemd-journald
     enabled: true
+
+- name: Restart DD Agent
+  ansible.builtin.systemd:
+    state: restarted
+    name: datadog-agent
+    enabled: true

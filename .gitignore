@@ -2,3 +2,5 @@
 *.tfstate*
 .terraform*
 **/*key
+priv.env
+*.env
