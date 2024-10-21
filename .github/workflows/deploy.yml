@@ -49,7 +49,7 @@ jobs:
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
 
   mainnet:
-    if: ${{ inputs.network || 'mainnet' }}
+    if: ${{ inputs.network == 'mainnet' }}
     uses: ./.github/workflows/common.yml
     with:
       network: ${{ inputs.network || 'mainnet' }}
