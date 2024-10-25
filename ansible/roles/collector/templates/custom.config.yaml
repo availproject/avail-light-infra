@@ -12,21 +12,19 @@ receivers:
         static_configs:
         - targets: ['0.0.0.0:8888']
 
+#TODO:Fix broad filters.
 processors:
-  filter/version:
-    metrics:
-      include:
-        match_type: expr
-        expressions:
-        - Label("version") == "{{ avail_light_version }}"
   filter/customers:
     metrics:
+      include:
+        match_type: regexp
+        metric_names:
+          - "{{ customer }}/.*"
+          - "{{ customer }}_.*"
       exclude:
         match_type: regexp
-#TODO: Later make it extensible enough so we can keep adding customers w/o hardcoding values.
         metric_names:
-          - sophon/.*
-          - sophon_.*
+          - "avail.*"
 
   # https://github.com/open-telemetry/opentelemetry-collector/blob/v0.83.0/processor/batchprocessor/README.md
   batch:
@@ -39,20 +37,13 @@ extensions:
 
 exporters:
   prometheus:
+#TODO: Check prom server endpoint with Lakshay
     endpoint: "0.0.0.0:8889"
     const_labels:
-      basedn: "lightclient.{{ network }}"
+      basedn: "{{ customer }}.lightclient"
     metric_expiration: 5m
     resource_to_telemetry_conversion:
       enabled: true
-
-  datadog:
-    api:
-      site: datadoghq.com
-      key: "{{ datadog_api_key }}"
-    host_metadata:
-      enabled: true
-      tags: ["basedn:lightclient.{{ network }}"]
 
   logging:
     verbosity: detailed
@@ -62,7 +53,7 @@ exporters:
 service:
   extensions: [health_check]
   pipelines:
-    metrics/datadog:
+    metrics:
       receivers: [prometheus, otlp]
-      processors: [filter/version, filter/customers]
-      exporters: [prometheus, datadog, logging]
+      processors: [filter/customers]
+      exporters: [prometheus, logging]

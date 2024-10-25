@@ -12,6 +12,7 @@ network_config:
 systemProbe:
   enabled: enabled
 
+#TODO: Decouple network logic to allow extensibility to custom infra deploys
 tags:
   - basedn:lightclient.{{ network }}
   - hosted_on:digitalocean
