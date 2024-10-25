@@ -8,8 +8,21 @@
   when: not otel_installed.stat.exists
 
 - name: Generate otel config file
+#TODO: find better way to handle default case. 
+# On custom infra no "network" var is needed, but nedded on default case.
+  when: not "{{ is_custom_otel }}"
   ansible.builtin.template:
     src: config.yaml
+    dest: /etc/otel/config.yaml
+    mode: "0755"
+  notify: 
+    - Restart otel
+    - Restart journald
+
+- name: Generate Custom otel config file
+  when: "{{ is_custom_otel }}"
+  ansible.builtin.template:
+    src: custom.config.yaml
     dest: /etc/otel/config.yaml
     mode: "0755"
   notify: 
