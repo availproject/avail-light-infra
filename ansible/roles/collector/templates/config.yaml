@@ -19,6 +19,14 @@ processors:
         match_type: expr
         expressions:
         - Label("version") == "{{ avail_light_version }}"
+  filter/customers:
+    metrics:
+      exclude:
+        match_type: regexp
+#TODO: Later make it extensible enough so we can keep adding customers w/o hardcoding values.
+        metric_names:
+          - sophon/.*
+          - sophon_.*
 
   # https://github.com/open-telemetry/opentelemetry-collector/blob/v0.83.0/processor/batchprocessor/README.md
   batch:
@@ -56,5 +64,5 @@ service:
   pipelines:
     metrics/datadog:
       receivers: [prometheus, otlp]
-      processors: [filter/version]
+      processors: [filter/version, filter/customers]
       exporters: [prometheus, datadog, logging]
