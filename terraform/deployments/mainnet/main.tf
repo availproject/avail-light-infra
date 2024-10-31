@@ -10,7 +10,7 @@ module "bootnode" {
   spec            = "c-8"
   node_type       = "bootnode"
   region          = "ams3"
-  tags            = ["role:bootnode"]
+  tags            = ["role:bootnode","Lightclient-Mainnet"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
   project      = data.digitalocean_project.project
@@ -23,7 +23,7 @@ module "otel" {
   spec            = "c-8"
   node_type       = "otel"
   region          = "ams3"
-  tags            = ["role:otel"]
+  tags            = ["role:otel","Lightclient-Mainnet"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
   project      = data.digitalocean_project.project
@@ -36,7 +36,7 @@ module "lightnode" {
   spec            = "c-32-intel"
   node_type       = "lightnode"
   region          = "ams3"
-  tags            = ["role:lightnode"]
+  tags            = ["role:lightnode","Lightclient-Mainnet"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
   project      = data.digitalocean_project.project
@@ -50,7 +50,7 @@ module "fatclient" {
   spec            = "c-32-intel"
   node_type       = "fatclient"
   region          = "ams3"
-  tags            = ["role:fatclient"]
+  tags            = ["role:fatclient","Lightclient-Mainnet"]
   network         = var.network
   ssh_fingerprint = [digitalocean_ssh_key.key.fingerprint]
   project      = data.digitalocean_project.project
