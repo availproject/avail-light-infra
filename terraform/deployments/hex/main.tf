@@ -31,7 +31,7 @@ module "otel" {
 
 module "lightnode" {
   source          = "../../modules/do"
-  node_count      = 2
+  node_count      = 1
   image           = "ubuntu-22-04-x64"
   spec            = "c-16-intel"
   node_type       = "lightnode"
@@ -45,7 +45,7 @@ module "lightnode" {
 
 module "fatclient" {
   source          = "../../modules/do"
-  node_count      = 2
+  node_count      = 1
   image           = "ubuntu-22-04-x64"
   spec            = "c-16-intel"
   node_type       = "fatclient"

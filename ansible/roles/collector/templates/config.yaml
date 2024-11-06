@@ -56,5 +56,5 @@ service:
   pipelines:
     metrics/datadog:
       receivers: [prometheus, otlp]
-      processors: [filter/version]
+      processors: []
       exporters: [prometheus, datadog, logging]
