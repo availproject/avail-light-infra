@@ -19,12 +19,13 @@ processors:
       include:
         match_type: regexp
         metric_names:
+          - ".*"
           - "{{ customer }}/.*"
           - "{{ customer }}_.*"
       exclude:
         match_type: regexp
         metric_names:
-          - "avail.*"
+          - ".*avail.*"
 
   # https://github.com/open-telemetry/opentelemetry-collector/blob/v0.83.0/processor/batchprocessor/README.md
   batch:
@@ -36,6 +37,10 @@ extensions:
   health_check:
 
 exporters:
+  prometheusremotewrite:
+    endpoint: https://prometheus.fra.avail.so/api/v1/write
+    external_labels:
+      basedn: "{{ customer }}.lightclient"
   prometheus:
 #TODO: Check prom server endpoint with Lakshay
     endpoint: "0.0.0.0:8889"
@@ -56,4 +61,4 @@ service:
     metrics:
       receivers: [prometheus, otlp]
       processors: [filter/customers]
-      exporters: [prometheus, logging]
+      exporters: [prometheus, prometheusremotewrite, logging]
